@@ -51,4 +51,9 @@ class BolsaTrabajo extends Controller
             dd($th);
         }
     }
+
+    public function mostrar_trabajo(){
+        $Mtrabajo = BolsaTrabajos::all();
+        return view('work.listado', compact('trabajos'));
+    }
 }
