@@ -7,11 +7,11 @@ use Illuminate\View\View;
 
 class AppLayout extends Component
 {
-    /**
-     * Get the view / contents that represents the component.
-     */
+    public function __construct(public ?string $header = null) {}
+
+    /** Devuelve la vista del componente */
     public function render(): View
     {
-        return view('layouts.app');
+        return view('components.app-layout'); // <-- apunta al blade de componente
     }
 }

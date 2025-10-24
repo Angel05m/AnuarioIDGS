@@ -1,0 +1,226 @@
+/* public/css/publicaciones.css */
+
+/* Animaciones suaves para las cards */
+.publication-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.publication-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Efecto de línea límite para texto */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Animación para la zona de drop */
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: rgba(16, 185, 129, 0.5);
+    }
+    50% {
+        border-color: rgba(16, 185, 129, 1);
+    }
+}
+
+#dropzone.dragging {
+    animation: pulse-border 1s ease-in-out infinite;
+}
+
+/* Transiciones suaves para imágenes */
+.publication-card img {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto hover en botones */
+button, a[class*="bg-"] {
+    transition: all 0.2s ease-in-out;
+}
+
+button:active, a[class*="bg-"]:active {
+    transform: scale(0.97);
+}
+
+/* Mejorar la legibilidad del contenido */
+.prose {
+    line-height: 1.8;
+}
+
+.prose p {
+    margin-bottom: 1.25em;
+}
+
+/* Skeleton loading (opcional para futuras implementaciones) */
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #059669;
+}
+
+/* Animación de entrada para las cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.publication-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+/* Delay progresivo para las cards */
+.publication-card:nth-child(1) { animation-delay: 0.05s; }
+.publication-card:nth-child(2) { animation-delay: 0.1s; }
+.publication-card:nth-child(3) { animation-delay: 0.15s; }
+.publication-card:nth-child(4) { animation-delay: 0.2s; }
+.publication-card:nth-child(5) { animation-delay: 0.25s; }
+.publication-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Efecto de focus mejorado */
+input:focus, 
+textarea:focus, 
+select:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Mensaje de error animado */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.error-message {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Badge animado para estado */
+@keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.badge-publicado {
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+    h1 { font-size: 1.875rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .publication-card {
+        page-break-inside: avoid;
+    }
+}
+
+/* Dark mode support (opcional) */
+@media (prefers-color-scheme: dark) {
+    /* Implementa dark mode si lo necesitas */
+}
+
+/* Mejoras de accesibilidad */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus visible para navegación por teclado */
+*:focus-visible {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Transición suave para cambios de layout */
+#publications-grid {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Loader spinner (opcional) */
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #10b981;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Notificación toast (para futuras implementaciones) */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    animation: slideInRight 0.3s ease-out;
+    z-index: 1000;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
