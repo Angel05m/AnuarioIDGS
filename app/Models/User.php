@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\BolsaTrabajos;
 
 class User extends Authenticatable
 {
@@ -19,8 +20,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'apellido_paterno', // <-- AÑADIR
+        'apellido_materno', // <-- AÑADIR
+        'matricula',        // <-- AÑADIR
         'email',
         'password',
+        'foto_perfil',      // <-- AÑADIR
     ];
 
     /**
@@ -44,5 +49,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function bolsaTrabajos()
+    {
+        return $this->hasMany(BolsaTrabajos::class, 'fk_usuario', 'id');
     }
 }
