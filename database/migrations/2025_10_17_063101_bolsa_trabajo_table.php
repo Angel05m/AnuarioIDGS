@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('correo');
             $table->string('telefono');
             $table->string('puesto');
-            $table->string('descripcion');
+            $table->text('descripcion');
             $table->string('direccion');
             $table->string('tipo_empleo');
-            $table->string('requisito');
+            $table->text('requisito');
             $table->integer('salario');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('fk_usuario')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

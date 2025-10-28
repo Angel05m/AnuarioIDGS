@@ -9,11 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class BolsaTrabajos extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $table = 'bolsa_trabajo';
     protected $primaryKey = 'pk_bolsa_trabajo';
 
-    protected $fillable=[
+    protected $fillable = [
         'fk_usuario',
         'nombre_empresa',
         'correo',
@@ -25,4 +25,9 @@ class BolsaTrabajos extends Model
         'requisito',
         'salario'
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'fk_usuario', 'id');
+    }
 }
