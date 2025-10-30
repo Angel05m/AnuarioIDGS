@@ -48,15 +48,47 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Perfil') }}
                         </x-dropdown-link>
+
+                        {{-- Contenido --}}
+                        <div x-data="{ contenidoOpen: false }" class="relative">
+                            <button @click="contenidoOpen = !contenidoOpen"
+                                class="w-full text-sm text-gray-600 flex justify-between px-4 py-2 hover:bg-gray-100">
+                                {{ __('Mis publicaciones') }}
+                            </button>
+
+                            <div x-show="contenidoOpen" @click.away="contenidoOpen = false" x-transition
+                                class="absolute left-0 mt-1 w-48 bg-white border border-gray-100 rounded-md shadow-lg z-50">
+                                <ul>
+                                    <li>
+                                        <a href="{{ route('usuario.mis_trabajos') }}"
+                                            class="block text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+                                            Trabajos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+                                            Contenido
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')"
+<<<<<<< HEAD
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 {{ __('Log Out') }}
+=======
+                                onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                {{ __('Cerrar sesión') }}
+>>>>>>> origin/fix
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -84,7 +116,11 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Inicio') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
+                {{ __('Trabajo') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
@@ -108,6 +144,30 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                <div x-data="{ contenidoOpen: false }" class="relative">
+                    <button @click="contenidoOpen = !contenidoOpen"
+                        class="w-full font-medium sm:text-sm text-gray-600 flex justify-between px-4 py-2 hover:bg-gray-100">
+                        {{ __('Mis publicaciones') }}
+                    </button>
+
+                    <div x-show="contenidoOpen" @click.away="contenidoOpen = false" x-transition
+                        class="w-full absolute left-0 mt-1 bg-white border border-gray-100 rounded-md shadow-lg z-50">
+                        <ul>
+                            <li>
+                                <a href="{{ route('usuario.mis_trabajos') }}"
+                                    class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+                                    Trabajos
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+                                    Contenido
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
