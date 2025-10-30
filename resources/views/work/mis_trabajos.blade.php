@@ -21,7 +21,7 @@
                         <div class="border rounded p-4 shadow-sm bg-white">
                             <h2 class="font-semibold text-lg">{{ $trabajo->puesto }} - {{ $trabajo->nombre_empresa }}
                             </h2>
-                            <p class="text-gray-700 text-justify">{{ Str::limit($trabajo->descripcion, 200) }}</p>
+                            <p class="text-gray-700 text-justify">{{ Str::limit($trabajo->descripcion, 250) }}</p>
                             <p class="text-sm text-gray-500">Publicado: {{ $trabajo->created_at->format('d/m/Y') }}</p>
                             <div class="mt-2 flex gap-2">
                                 <a href="#" class="text-blue-600 hover:underline">
