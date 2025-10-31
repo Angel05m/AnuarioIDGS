@@ -23,7 +23,7 @@
                         {{ __('Galeria') }}
                     </x-nav-link>
                     {{-- BOTÓN: Mis publicaciones --}}
-                    <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
+                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.*')">
                         {{ __('Mis publicaciones') }}
                     </x-nav-link>
                 </div>
