@@ -41,9 +41,9 @@
                                     class="text-teal-600 hover:underline">
                                     Editar
                                 </a>
-                                <a href="#" class="text-red-500 hover:underline">
+                                {{-- <a href="#" class="text-red-500 hover:underline">
                                     Deshabilitar
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     @endforeach
