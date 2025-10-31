@@ -29,7 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/trabajo/{id}/editar', [BolsaTrabajoController::class, 'editar_trabajo'])->name('trabajo.editar');
     Route::put('/trabajo/{id}/actualizar', [BolsaTrabajoController::class, 'actualizar_trabajo'])->name('trabajo.actualizar');
 
-    
+    // GALERIA
+    Route::get('/galeria-usuarios', function () {
+        return view('galeria.bodega');
+    })->name('bodega.galeria');
+
+    Route::get('/galeria-detalle', function () {
+        return view('galeria.detalle');
+    })->name('bodega.detalle');
 });
 
 require __DIR__ . '/auth.php';

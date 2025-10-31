@@ -10,8 +10,8 @@
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                autofocus autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full px-2 py-2 border border-gray-200" type="email"
+                name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -19,8 +19,8 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
+            <x-text-input id="password" class="block mt-1 w-full px-2 py-2 border border-gray-200" type="password"
+                name="password" required autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -41,13 +41,13 @@
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
-            <a href="{{ route('register') }}" class="px-5 py-1.5 border ml-3 bg-red-700 rounded-lg">
-                Register
-            </a>
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+            <a href="{{ route('register') }}" class="px-5 py-1.5 text-white border ml-3 bg-gray-800 rounded-lg">
+                Register
+            </a>
         </div>
     </form>
 </x-guest-layout>

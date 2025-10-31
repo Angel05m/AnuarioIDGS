@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('tipo_empleo');
             $table->text('requisito');
             $table->integer('salario');
+            $table->boolean('estatus')->default(true);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_usuario')->references('id')->on('users')->onDelete('cascade');
