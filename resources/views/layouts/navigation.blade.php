@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-[#009B8C] border-b border-[#058578]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -7,25 +7,25 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo class="block h-9 w-auto fill-current text-white" />
                     </a>
                 </div>
 
                 <!-- Navigation Links (desktop) -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link class="text-white" :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Inicio') }}
                     </x-nav-link>
-
-                    <x-nav-link :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
+                    <x-nav-link class="text-white" :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
                         {{ __('Trabajos') }}
                     </x-nav-link>
-
+                    <x-nav-link class="text-white" :href="route('bodega.galeria')" :active="request()->routeIs('bodega.galeria')">
+                        {{ __('Galeria') }}
+                    </x-nav-link>
                     {{-- BOTÓN: Mis publicaciones --}}
-                <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
-                    {{ __('Mis publicaciones') }}
-                </x-nav-link>
-
+                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.*')">
+                        {{ __('Mis publicaciones') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -38,7 +38,8 @@
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                         clip-rule="evenodd" />
@@ -47,7 +48,7 @@
                         </button>
                     </x-slot>
 
-                    <x-slot name="content">
+                    <x-slot name="content" class="">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Perfil') }}
                         </x-dropdown-link>
@@ -78,14 +79,14 @@
                             </div>
                         </div>
 
-                      <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-dropdown-link :href="route('logout')"
-                        onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Cerrar sesión') }}
-                    </x-dropdown-link>
-                </form>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('Cerrar sesión') }}
+                            </x-dropdown-link>
+                        </form>
 
                     </x-slot>
                 </x-dropdown>
@@ -99,9 +100,8 @@
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -158,7 +158,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
+                                <a href="#"
+                                    class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
                                     Contenido
                                 </a>
                             </li>

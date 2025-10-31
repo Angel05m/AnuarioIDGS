@@ -1,9 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-white leading-tight">
                 {{ __('Editar trabajo') }}
             </h2>
+            <button onclick="window.history.back()"
+                class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-200 cursor-pointer">
+                Cancelar
+            </button>
         </div>
     </x-slot>
 
@@ -49,16 +53,16 @@
 
                             <div>
                                 <label class="block text-gray-700">Teléfono de la empresa:</label>
-                                <input type="text" name="telefono" placeholder="Ej: 6699779922" maxlength="10" required
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+                                <input type="text" name="telefono" placeholder="Ej: 6699779922" maxlength="10"
+                                    required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
                                     value="{{ old('telefono', $trabajo->telefono) }}"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
                             </div>
 
                             <div>
                                 <label class="block text-gray-700">Dirección:</label>
-                                <input type="text" name="direccion" placeholder="Ej: Pedro Prado Cordoba. Escuinapa" required
-                                    value="{{ old('direccion', $trabajo->direccion) }}"
+                                <input type="text" name="direccion" placeholder="Ej: Pedro Prado Cordoba. Escuinapa"
+                                    required value="{{ old('direccion', $trabajo->direccion) }}"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
                             </div>
                         </div>
@@ -68,7 +72,7 @@
                             <h2 class="text-xl font-medium mb-2">Detalles del trabajo</h2>
 
                             <div>
-                                <label class="block text-gray-700">Puesto:</label> 
+                                <label class="block text-gray-700">Puesto:</label>
                                 <input type="text" name="puesto" placeholder="Ej: FullStack" required
                                     value="{{ old('puesto', $trabajo->puesto) }}"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
@@ -78,7 +82,8 @@
                                 <label class="block text-gray-700">Descripción del puesto:</label>
                                 <textarea
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    name="descripcion" required cols="30" rows="10" placeholder="Agrega contenido detallado, promoviendo el puesto">{{ old('descripcion', $trabajo->descripcion) }}</textarea>
+                                    name="descripcion" required cols="30" rows="10"
+                                    placeholder="Agrega contenido detallado, promoviendo el puesto">{{ old('descripcion', $trabajo->descripcion) }}</textarea>
                             </div>
 
                             <div>

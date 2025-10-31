@@ -30,12 +30,12 @@
             {{-- Muestra la foto actual si existe --}}
             @if ($user->foto_perfil)
                 <div class="mt-2 mb-4">
-                    <img src="{{ asset('storage/' . $user->foto_perfil) }}" alt="Foto de perfil actual" class="h-20 w-20 rounded-full object-cover border-2 border-gray-200">
+                    <img src="{{ asset('storage/' . $user->foto_perfil) }}" alt="Foto de perfil actual" class="h-20 w-20 rounded-full px-2 py-2 object-cover border-2 border-gray-200">
                 </div>
             @endif
             
             {{-- Input para subir nueva foto --}}
-            <input id="foto_perfil" name="foto_perfil" type="file" class="mt-1 block w-full text-sm text-gray-500
+            <input id="foto_perfil" name="foto_perfil" type="file" class="mt-1 block w-full px-2 py-2 border border-gray-200 text-sm text-gray-500
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-md file:border-0
                 file:text-sm file:font-semibold
@@ -48,35 +48,35 @@
         {{-- Campo: Nombre --}}
         <div>
             <x-input-label for="name" :value="__('Nombre')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full px-2 py-2 border border-gray-200" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         {{-- Campo: Apellido Paterno --}}
         <div>
             <x-input-label for="apellido_paterno" :value="__('Apellido Paterno')" />
-            <x-text-input id="apellido_paterno" name="apellido_paterno" type="text" class="mt-1 block w-full" :value="old('apellido_paterno', $user->apellido_paterno)" required autocomplete="apellido-paterno" />
+            <x-text-input id="apellido_paterno" name="apellido_paterno" type="text" class="mt-1 block w-full px-2 py-2 border border-gray-200" :value="old('apellido_paterno', $user->apellido_paterno)" required autocomplete="apellido-paterno" />
             <x-input-error class="mt-2" :messages="$errors->get('apellido_paterno')" />
         </div>
 
         {{-- Campo: Apellido Materno --}}
         <div>
             <x-input-label for="apellido_materno" :value="__('Apellido Materno (Opcional)')" />
-            <x-text-input id="apellido_materno" name="apellido_materno" type="text" class="mt-1 block w-full" :value="old('apellido_materno', $user->apellido_materno)" autocomplete="apellido-materno" />
+            <x-text-input id="apellido_materno" name="apellido_materno" type="text" class="mt-1 block w-full px-2 py-2 border border-gray-200" :value="old('apellido_materno', $user->apellido_materno)" autocomplete="apellido-materno" />
             <x-input-error class="mt-2" :messages="$errors->get('apellido_materno')" />
         </div>
         
         {{-- Campo: Matrícula --}}
         <div>
             <x-input-label for="matricula" :value="__('Matrícula')" />
-            <x-text-input id="matricula" name="matricula" type="text" class="mt-1 block w-full" :value="old('matricula', $user->matricula)" required autocomplete="matricula" />
+            <x-text-input id="matricula" name="matricula" type="text" class="mt-1 block w-full px-2 py-2 border border-gray-200" :value="old('matricula', $user->matricula)" required autocomplete="matricula" />
             <x-input-error class="mt-2" :messages="$errors->get('matricula')" />
         </div>
 
         {{-- Campo: Email --}}
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full px-2 py-2 border border-gray-200" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())

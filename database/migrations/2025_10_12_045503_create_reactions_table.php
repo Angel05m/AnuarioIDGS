@@ -17,10 +17,10 @@ return new class extends Migration
         });
 
         // Agregar contador de reacciones a publications
-        Schema::table('publications', function (Blueprint $table) {
-            $table->integer('likes_count')->default(0);
-            $table->integer('views_count')->default(0);
-        });
+        // Schema::table('publications', function (Blueprint $table) {
+        //     $table->integer('likes_count')->default(0);
+        //     $table->integer('views_count')->default(0);
+        // });
     }
 
     public function down(): void

@@ -5,59 +5,44 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BolsaTrabajoController;
 use App\Http\Controllers\PublicationController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+Route::get('/', function () {
+    return view('auth.login');
+});
 
-// Landing al login
-Route::get('/', fn () => view('auth.login'));
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Dashboard
-Route::get('/dashboard', fn () => view('dashboard'))
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// Rutas protegidas (requieren usuario autenticado y verificado)
-Route::middleware(['auth', 'verified'])->group(function () {
+    // RUTAS BOLSA DE TRABAJO
+    Route::get('/publicacion-trabajo', function () {
+        return view('work.public_work');
+    })->name('publicWork');
 
-    // ----- BOLSA DE TRABAJO -----
-    Route::get('/publicacion-trabajo', fn () => view('work.public_work'))
-        ->name('publicWork');
+    Route::post('/guardar-trabajo', [BolsaTrabajoController::class, 'registrar'])->name('guardar.trabajo');
+    Route::get('/trabajos', [BolsaTrabajoController::class, 'mostrar_trabajos'])->name('trabajos.listado');
+    Route::get('/trabajo/{id}', [BolsaTrabajoController::class, 'ver_trabajo'])->name('ver.trabajo');
+    Route::get('/usuario/mis-trabajos', [BolsaTrabajoController::class, 'mostrar_mis_trabajos'])->name('usuario.mis_trabajos');
+    Route::get('/trabajo/{id}/editar', [BolsaTrabajoController::class, 'editar_trabajo'])->name('trabajo.editar');
+    Route::put('/trabajo/{id}/actualizar', [BolsaTrabajoController::class, 'actualizar_trabajo'])->name('trabajo.actualizar');
 
-    Route::post('/guardar-trabajo', [BolsaTrabajoController::class, 'registrar'])
-        ->name('guardar.trabajo');
+    // GALERIA
+    Route::get('/galeria-usuarios', function () {
+        return view('galeria.bodega');
+    })->name('bodega.galeria');
 
-    Route::get('/trabajos', [BolsaTrabajoController::class, 'mostrar_trabajos'])
-        ->name('trabajos.listado');
-
-    Route::get('/trabajo/{id}', [BolsaTrabajoController::class, 'ver_trabajo'])
-        ->name('ver.trabajo');
-
-    Route::get('/usuario/mis-trabajos', [BolsaTrabajoController::class, 'mostrar_mis_trabajos'])
-        ->name('usuario.mis_trabajos');
-
-    Route::get('/trabajo/{id}/editar', [BolsaTrabajoController::class, 'editar_trabajo'])
-        ->name('trabajo.editar');
-
-    Route::put('/trabajo/{id}/actualizar', [BolsaTrabajoController::class, 'actualizar_trabajo'])
-        ->name('trabajo.actualizar');
+    Route::get('/galeria-detalle', function () {
+        return view('galeria.detalle');
+    })->name('bodega.detalle');
 
     // ----- PUBLICACIONES (Anuario / Galería) -----
     Route::resource('publications', PublicationController::class);
     Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
         ->name('publications.like');
-
-    // ----- PERFIL -----
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
-
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
-
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
 });
 
 // Auth scaffolding (login, register, etc.)
