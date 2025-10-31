@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BolsaTrabajoController;
+use App\Http\Controllers\PublicationController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/galeria-detalle', function () {
         return view('galeria.detalle');
     })->name('bodega.detalle');
+
+    // ----- PUBLICACIONES (Anuario / Galería) -----
+    Route::resource('publications', PublicationController::class);
+    Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
+        ->name('publications.like');
 });
 
+// Auth scaffolding (login, register, etc.)
 require __DIR__ . '/auth.php';
