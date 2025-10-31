@@ -54,4 +54,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(BolsaTrabajos::class, 'fk_usuario', 'id');
     }
+
+    public function publications()
+{
+    return $this->hasMany(\App\Models\Publication::class);
+}
+
 }

@@ -22,9 +22,10 @@
                     </x-nav-link>
 
                     {{-- BOTÓN: Mis publicaciones --}}
-                    <x-nav-link href="{{ url('/publications') }}" :active="request()->is('publications*')">
-                        {{ __('Mis publicaciones') }}
-                    </x-nav-link>
+                <x-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
+                    {{ __('Mis publicaciones') }}
+                </x-nav-link>
+
                 </div>
             </div>
 
@@ -77,20 +78,15 @@
                             </div>
                         </div>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-<<<<<<< HEAD
-                                onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Log Out') }}
-=======
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Cerrar sesión') }}
->>>>>>> origin/fix
-                            </x-dropdown-link>
-                        </form>
+                      <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-dropdown-link :href="route('logout')"
+                        onclick="event.preventDefault(); this.closest('form').submit();">
+                        {{ __('Cerrar sesión') }}
+                    </x-dropdown-link>
+                </form>
+
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -128,9 +124,10 @@
             </x-responsive-nav-link>
 
             {{-- Mis publicaciones (móvil) --}}
-            <x-responsive-nav-link href="{{ url('/publications') }}" :active="request()->is('publications*')">
+            <x-responsive-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
                 {{ __('Mis publicaciones') }}
             </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->
