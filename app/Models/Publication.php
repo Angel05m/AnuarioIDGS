@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publication extends Model
 {
-
-
     use HasFactory;
 
     protected $fillable = [
@@ -17,43 +15,71 @@ class Publication extends Model
         'descripcion',
         'contenido',
         'categoria',
-        'estado',
+        'estado',              // 'borrador' | 'publicado'
         'imagen',
         'likes_count',
         'views_count',
-        'fecha_publicacion',
+        'fecha_publicacion',   // <- fecha y hora reales de publicación
     ];
 
     protected $casts = [
         'fecha_publicacion' => 'datetime',
+        'created_at'        => 'datetime',
+        'updated_at'        => 'datetime',
     ];
 
-    // Relación con usuario (opcional para mostrar autor en vista)
+    /* ===========================
+     |  Relaciones
+     * =========================== */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 🔹 Accessor para obtener la URL completa de la imagen
+    /* ===========================
+     |  Accessors / Attributes
+     * =========================== */
+
+    // URL pública de la imagen (sirve en Blade como $publication->image_url)
     public function getImageUrlAttribute(): ?string
     {
         if (!$this->imagen) {
             return null;
         }
 
-        
-
-        // Limpia posibles prefijos incorrectos como 'public/'
+        // Limpia prefijo 'public/' si viene así de la BD
         $path = preg_replace('#^public/#', '', $this->imagen);
 
-        // Devuelve la URL pública desde /storage/
+        // Devuelve URL desde /storage (requiere php artisan storage:link)
         return asset('storage/' . $path);
     }
 
-    // …dentro de la clase Publication
-public function scopeOwnedBy($query, $userId)
-{
-    return $query->where('user_id', $userId);
-}
+    // Fecha a mostrar: usa fecha_publicacion si existe; si no, created_at
+    // En Blade: {{ $publication->shown_at?->format('d/m/Y H:i') }}
+    public function getShownAtAttribute()
+    {
+        return $this->fecha_publicacion ?? $this->created_at;
+    }
 
+    /* ===========================
+     |  Scopes (helpers de consulta)
+     * =========================== */
+
+    // Filtra por dueño
+    public function scopeOwnedBy($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    // Sólo publicadas
+    public function scopePublished($query)
+    {
+        return $query->where('estado', 'publicado');
+    }
+
+    // Ordena por fecha de publicación (o created_at si no hay)
+    public function scopeOrderByShownAt($query, $dir = 'DESC')
+    {
+        return $query->orderByRaw('COALESCE(fecha_publicacion, created_at) ' . ($dir === 'ASC' ? 'ASC' : 'DESC'));
+    }
 }

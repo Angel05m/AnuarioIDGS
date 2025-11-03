@@ -9,9 +9,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Inicio => feed con todas las publicaciones (por defecto 'publicado')
+Route::get('/dashboard', [PublicationController::class, 'feed'])
+
+
+    ->middleware(['auth','verified'])
+    ->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

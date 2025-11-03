@@ -147,28 +147,39 @@
     </div>
   </div>
 
-{{-- ===================
-     Botones de Acción
-     =================== --}}
-<div class="flex items-center justify-end gap-4 mt-8">
-  {{-- Botón Cancelar --}}
-  <a href="{{ route('publications.index') }}"
-     class="inline-flex items-center px-6 py-3 rounded-lg bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition">
-    Cancelar
-  </a>
+{{-- Acciones --}}
+<div class="mt-6 flex items-center justify-between gap-3">
 
-  {{-- Botón Guardar / Actualizar --}}
-  <button type="submit"
-          class="inline-flex items-center px-6 py-3 rounded-lg font-semibold shadow-md
-                 bg-[#129990] text-black hover:bg-[#90D1CA] transition-all duration-200 border border-[#129990]">
-    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-    </svg>
-    {{ isset($publication) ? 'Actualizar publicación' : 'Guardar publicación' }}
-  </button>
+  {{-- IZQUIERDA: Eliminar (solo en edición) --}}
+  @if(isset($publication) && $publication->exists)
+    <button type="button"
+            onclick="toggleDeleteModal(true)"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-200 text-red-700 hover:bg-red-50">
+      {{-- icono papelera --}}
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-1-3H10a1 1 0 00-1 1v2h8V5a1 1 0 00-1-1z"/>
+      </svg>
+      Eliminar publicación
+    </button>
+  @else
+    <span></span>
+  @endif
+
+  {{-- DERECHA: Cancelar / Guardar --}}
+  <div class="ml-auto flex items-center gap-3">
+    <a href="{{ isset($publication) ? route('publications.show',$publication) : route('publications.index') }}"
+       class="inline-flex items-center px-4 py-2 rounded-lg border border-gray-200 text-slate-700 hover:bg-gray-50">
+      Cancelar
+    </a>
+
+    <button type="submit" class="btn-primary">
+      {{ isset($publication) ? 'Actualizar publicación' : 'Publicar' }}
+    </button>
+  </div>
 </div>
 
-</div>
+
 
 {{-- Script para vista previa --}}
 <script>
