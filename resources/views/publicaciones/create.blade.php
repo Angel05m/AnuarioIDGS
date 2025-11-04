@@ -65,7 +65,9 @@
   </style>
   @endpush
 
-  <div class="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="pt-0 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+
 
     {{-- Cabecera interna (igual al edit) --}}
     <div class="card-shell mb-6">
@@ -75,13 +77,15 @@
             <h2 class="text-3xl font-extrabold">Nueva Publicación</h2>
             <p class="muted">Captura los detalles de tu publicación</p>
           </div>
-
-          {{-- Botón a Mis publicaciones (par al de "Ver" en Edit) --}}
-          <a href="{{ route('publications.index') }}" class="inline-flex items-center btn-primary">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          
+          <a href="{{ route('publications.index') }}"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--utesc-base)] text-white font-semibold shadow hover:opacity-95 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             Mis publicaciones
+          </a>
+
           </a>
         </div>
       </div>

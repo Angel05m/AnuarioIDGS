@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
         return view('galeria.detalle');
     })->name('bodega.detalle');
 
-    // ----- PUBLICACIONES (Anuario / Galería) -----
+    // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);
     Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
         ->name('publications.like');

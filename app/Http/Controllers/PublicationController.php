@@ -153,7 +153,7 @@ class PublicationController extends Controller
         $publication = Publication::create($validated);
 
         return redirect()
-            ->route('publications.show', $publication)
+            ->route('publications.index', $publication)
             ->with('success', '¡Publicación creada!');
     }
 

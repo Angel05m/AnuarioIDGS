@@ -3,89 +3,61 @@
   @push('styles')
   <style>
     :root{
-      --utesc-base:#129990;   /* verde oscuro institucional */
-      --utesc-light:#90D1CA;  /* verde celeste institucional */
+      --utesc-base:#129990;
+      --utesc-light:#90D1CA;
     }
 
-    /* Tarjeta con borde degradado verde (igual que create) */
     .card-shell{ padding:1px; border-radius:1rem;
       background:linear-gradient(135deg,var(--utesc-base),var(--utesc-light)); }
     .card-inner{ background:#fff; border-radius:.95rem; }
 
-    /* Botón principal verde */
     .btn-primary{
       background:var(--utesc-base); color:#fff; border-radius:.8rem;
       padding:.85rem 1.25rem; font-weight:700;
-      box-shadow:
-        0 10px 20px rgba(18,153,144,.18),
-        inset 0 0 0 1px rgba(255,255,255,.25);
-      transition: filter .2s ease, transform .08s ease;
+      box-shadow:0 10px 20px rgba(18,153,144,.18), inset 0 0 0 1px rgba(255,255,255,.25);
+      transition:filter .2s, transform .08s;
     }
     .btn-primary:hover{ filter:brightness(.95); }
-    .btn-primary:active{ transform: translateY(1px); }
 
-    /* Inputs siempre con borde verde (no azul/gris) */
-    input[type="text"],
-    input[type="search"],
-    input[type="email"],
-    input[type="file"],
-    select,
-    textarea{
-      background:#fff;
-      color:#111827;
-      border:1.5px solid var(--utesc-base) !important;
-      border-radius:.8rem;
-      box-shadow:none !important;
-      outline:none !important;
-    }
-    input:focus, select:focus, textarea:focus{
-      border-color:var(--utesc-base) !important;
-      box-shadow:0 0 0 3px rgba(18,153,144,.16) !important;
-      outline:none !important;
+    /* Espaciado general — deja igual arriba y abajo */
+    .page-wrapper{
+      padding-top:0.0rem;  /* espacio arriba */
+      padding-bottom:0.0rem; /* espacio abajo */
     }
 
-    /* Etiquetas y textos en negro */
-    label, h1, h2, h3, p, span { color:#0f172a; } /* slate-900 */
-    .muted{ color:#334155; } /* slate-700 */
-
-    /* Dropzone (del _form) */
-    #dropzone{
-      border:2px dashed rgba(0,155,140,.55) !important;
-      background:#fff;
-      border-radius:1rem;
-    }
-    #dropzone:hover{ border-color:var(--utesc-base) !important; }
-
-    /* Badges, borders suaves en contenedores */
-    .section{
-      background:#fff;
-      border-radius:1rem;
-      border:1px solid rgba(18,153,144,.25);
-    }
+    /* Modal */
+    .modal-backdrop{ position:fixed; inset:0; background:rgba(2,6,23,.6);
+      display:none; align-items:center; justify-content:center; z-index:50; padding:1rem; }
+    .modal-backdrop.show{ display:flex; }
+    .modal-card{ width:100%; max-width:480px; border-radius:1rem; background:#fff;
+      border:1px solid rgba(225,29,72,.35); box-shadow:0 25px 60px rgba(2,6,23,.35); }
   </style>
   @endpush
 
-  <div class="py-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
+  {{-- Contenedor general con espaciado superior e inferior iguales --}}
+  <div class="page-wrapper max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-    {{-- Cabecera interna (igual a create, sin header gris) --}}
+    {{-- Cabecera --}}
     <div class="card-shell mb-6">
       <div class="card-inner p-6">
         <div class="flex items-center justify-between gap-4">
           <div>
             <h2 class="text-3xl font-extrabold">Editar Publicación</h2>
-            <p class="muted">Modifica los detalles de tu publicación</p>
+            <p class="text-slate-600">Modifica los detalles de tu publicación</p>
           </div>
-          <a href="{{ route('publications.show', $publication) }}" class="inline-flex items-center btn-primary">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <a href="{{ route('publications.show', $publication) }}"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--utesc-base)] text-white font-semibold shadow hover:opacity-95 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
             Ver
           </a>
+
         </div>
       </div>
     </div>
 
-    {{-- Formulario principal (mismo parcial que create) --}}
+    {{-- Formulario principal --}}
     <div class="card-shell">
       <div class="card-inner p-6">
         <form action="{{ route('publications.update', $publication) }}" method="POST" enctype="multipart/form-data">
@@ -96,10 +68,49 @@
       </div>
     </div>
 
-    {{-- Formulario oculto para eliminar (lo usa el modal del _form) --}}
+    {{-- Form oculto para DELETE --}}
     <form id="deleteForm" action="{{ route('publications.destroy', $publication) }}" method="POST" class="hidden">
       @csrf
       @method('DELETE')
     </form>
   </div>
+
+  {{-- Modal confirmación --}}
+  <div id="deleteModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card">
+      <div class="p-6">
+        <h3 class="text-xl font-bold text-slate-900 mb-2">Eliminar publicación</h3>
+        <p class="text-slate-600">Esta acción no se puede deshacer. ¿Deseas eliminarla definitivamente?</p>
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="closeDelete"
+                  class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 bg-white hover:bg-slate-50">
+            Cancelar
+          </button>
+          <button type="button" id="confirmDelete"
+                  class="px-4 py-2 rounded-lg bg-rose-600 text-white font-semibold hover:opacity-95">
+            Sí, eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @push('scripts')
+  <script>
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.openDelete')) {
+        document.getElementById('deleteModal')?.classList.add('show');
+      }
+    });
+    document.getElementById('closeDelete')?.addEventListener('click', () =>
+      document.getElementById('deleteModal')?.classList.remove('show')
+    );
+    document.getElementById('deleteModal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'deleteModal') e.currentTarget.classList.remove('show');
+    });
+    document.getElementById('confirmDelete')?.addEventListener('click', () =>
+      document.getElementById('deleteForm')?.submit()
+    );
+  </script>
+  @endpush
 </x-app-layout>
