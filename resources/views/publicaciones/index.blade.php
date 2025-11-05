@@ -9,35 +9,34 @@
     --page-navy:#0f2b3a;    /* azul marino para fondo de galería */
   }
 
-  /* Fondo de la página, para empatar con “Galería” */
+  /* Fondo de la página */
   .page-bg{ background: var(--page-navy); }
 
-/* ===== Barra superior tipo “tarjeta” blanca ===== */
-.toolbar{
-  background:#ffffff;
-  border:1px solid #e5e7eb;
-  border-radius: 1rem;
-  padding: 1rem 1.5rem;
-  margin-top: -0.75rem;         
-  margin-bottom: 1.11rem;         
-  box-shadow: 0 8px 28px rgba(2, 8, 23, .10);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem;
-}
+  /* ===== Barra superior tipo “tarjeta” blanca ===== */
+  .toolbar{
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:1rem;
+    padding:0.85rem 1.25rem;   /* 🔹 un poco más delgada */
+    margin-top:-0.7rem;        /* 🔹 sube un poquito */
+    margin-bottom:1rem;        /* 🔹 menos espacio inferior */
+    box-shadow:0 8px 28px rgba(2, 8, 23, .10);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:0.85rem;               /* 🔹 menos separación interna */
+  }
 
-
-  /* ===== Campos (buscador y selects) uniformes con borde verde permanente ===== */
+  /* ===== Campos (buscador y selects) con borde verde ===== */
   .toolbar .search,
   .toolbar .select{
-    position: relative;
-    flex: 1;
-    min-width: 220px;
+    position:relative;
+    flex:1;
+    min-width:220px;
     background:#fff;
     color:#0f172a;
-    border:1px solid var(--utesc-base) !important; /* borde verde SIEMPRE visible (delgado) */
-    border-radius:.95rem;
+    border:1px solid var(--utesc-base) !important; /* borde verde SIEMPRE visible */
+    border-radius:.9rem;
     box-shadow:0 1px 2px rgba(0,0,0,.03) inset;
   }
 
@@ -47,8 +46,9 @@
     background:#fff;
     color:#0f172a;
     border:none;
-    border-radius:.95rem;
-    padding:.78rem 1rem .82rem 2.2rem;
+    border-radius:.9rem;
+    padding:.68rem .9rem .7rem 2.1rem; /* 🔹 un poco más compacto */
+    font-size:.97rem;
     outline:none !important;
     box-shadow:none !important;
     -webkit-appearance:none;
@@ -56,25 +56,34 @@
   }
 
   .toolbar .search .icon{
-    position:absolute; left:.75rem; top:50%; transform:translateY(-50%);
-    color:#6b7280; pointer-events:none;
+    position:absolute;
+    left:.75rem;
+    top:50%;
+    transform:translateY(-50%);
+    color:#6b7280;
+    pointer-events:none;
   }
+
   .toolbar .search input::placeholder{ color:#6b7280; }
 
-  /* cuando el input del buscador tiene foco */
+  /* 🔹 efecto foco verde */
   .toolbar .search:focus-within{
-    border-color: var(--utesc-base) !important;
+    border-color:var(--utesc-base) !important;
     box-shadow:0 0 0 3px rgba(18,153,144,.18) !important;
   }
 
-  /* elimina iconos nativos de WebKit */
+
   .toolbar .search input::-webkit-search-decoration,
   .toolbar .search input::-webkit-search-cancel-button{
     -webkit-appearance:none;
   }
 
   /* --- Selects --- */
-  .toolbar .select{ padding:.78rem 1.1rem; }
+  .toolbar .select{
+    padding:.68rem .95rem; /* 🔹 menos alto */
+    font-size:.97rem;
+  }
+
   .toolbar .select:focus{
     outline:none;
     border:1px solid var(--utesc-base) !important;
@@ -86,20 +95,31 @@
     background:#0f7f77;
     color:#fff;
     font-weight:700;
-    border-radius:.95rem;
-    padding:.78rem 1.1rem;
+    border-radius:.9rem;
+    padding:.68rem 1rem;    /* 🔹 más delgado */
+    font-size:.97rem;
     display:inline-flex;
     align-items:center;
-    gap:.45rem;
-    box-shadow:0 10px 20px rgba(15,127,119,.22),
-               inset 0 0 0 1px rgba(255,255,255,.22);
+    gap:.4rem;
+    box-shadow:
+      0 10px 20px rgba(15,127,119,.22),
+      inset 0 0 0 1px rgba(255,255,255,.22);
     transition:filter .2s;
   }
-  .toolbar .btn-primary:hover{ filter:brightness(.96); }
 
-  .card-hover{ transition:all .3s cubic-bezier(.4,0,.2,1); }
-  .card-hover:hover{ transform:translateY(-6px); }
+  .toolbar .btn-primary:hover{
+    filter:brightness(.96);
+  }
 
+  /* ===== Animación de tarjetas ===== */
+  .card-hover{
+    transition:all .3s cubic-bezier(.4,0,.2,1);
+  }
+  .card-hover:hover{
+    transform:translateY(-6px);
+  }
+
+  /* ===== Tooltip ===== */
   .tooltip{
     visibility:hidden;
     position:absolute;
@@ -113,10 +133,24 @@
     bottom:100%;
     left:50%;
     transform:translateX(-50%);
-    margin-bottom:6px
+    margin-bottom:6px;
   }
-  .has-tooltip:hover .tooltip{visibility:visible}
+  .has-tooltip:hover .tooltip{
+    visibility:visible;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width:640px){
+    .toolbar .search, .toolbar .select{
+      min-width:100%;
+    }
+    .toolbar .btn-primary{
+      width:100%;
+      justify-content:center;
+    }
+  }
 </style>
+
 @endpush
 
 @section('content')
@@ -130,7 +164,7 @@
   @endif
 
   {{-- Barra de filtros (con margen inferior muy pequeño) --}}
-  <div class="toolbar mb-2 md:mb-3">
+  <div class="toolbar toolbar--sm mb-2 md:mb-3">
     <form
       id="filters"
       method="GET"
