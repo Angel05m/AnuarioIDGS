@@ -1,9 +1,9 @@
 @csrf
 <div class="space-y-8">
 
-  {{-- ============================
-       Sección: Información Básica
-       ============================ --}}
+  {{-- =========================
+       Información Básica
+       ========================= --}}
   <div class="rounded-xl border-2 border-[#129990] p-6 shadow-sm bg-white">
     <h3 class="text-lg font-bold text-[#129990] mb-4 flex items-center">
       <svg class="w-5 h-5 mr-2 text-[#129990]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,11 +14,9 @@
     </h3>
 
     <div class="space-y-4 text-gray-800">
-      {{-- TÍTULO --}}
+      {{-- Título --}}
       <div>
-        <label class="block text-sm font-semibold text-gray-800 mb-1">
-          Título <span class="text-[#129990]">*</span>
-        </label>
+        <label class="block text-sm font-semibold text-gray-800 mb-1">Título <span class="text-[#129990]">*</span></label>
         <input type="text" name="titulo"
                value="{{ old('titulo', $publication->titulo ?? '') }}"
                placeholder="Escribe un título atractivo"
@@ -26,7 +24,7 @@
                required maxlength="255">
       </div>
 
-      {{-- RESUMEN --}}
+      {{-- Resumen --}}
       <div>
         <label class="block text-sm font-semibold text-gray-800 mb-1">
           Resumen <span class="text-gray-500 text-xs font-normal">(opcional)</span>
@@ -37,11 +35,9 @@
                   maxlength="300">{{ old('descripcion', $publication->descripcion ?? '') }}</textarea>
       </div>
 
-      {{-- CONTENIDO --}}
+      {{-- Contenido --}}
       <div>
-        <label class="block text-sm font-semibold text-gray-800 mb-1">
-          Contenido <span class="text-[#129990]">*</span>
-        </label>
+        <label class="block text-sm font-semibold text-gray-800 mb-1">Contenido <span class="text-[#129990]">*</span></label>
         <textarea name="contenido" rows="8"
                   placeholder="Escribe el contenido completo de tu publicación..."
                   class="block w-full rounded-lg border-2 border-[#129990] px-4 py-2.5 focus:outline-none focus:border-[#129990]"
@@ -50,9 +46,9 @@
     </div>
   </div>
 
-  {{-- ============================
-       Sección: Imagen de Portada
-       ============================ --}}
+  {{-- =========================
+       Imagen de Portada
+       ========================= --}}
   <div class="rounded-xl border-2 border-[#129990] p-6 shadow-sm bg-white">
     <h3 class="text-lg font-bold text-[#129990] mb-4 flex items-center">
       <svg class="w-5 h-5 mr-2 text-[#129990]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,12 +58,10 @@
       Imagen de Portada <span class="ml-2 text-xs text-gray-500 font-normal">(opcional)</span>
     </h3>
 
-    {{-- Dropzone --}}
     <div id="dropzone"
          class="relative border-2 border-dashed border-[#129990] rounded-xl p-8 text-center bg-white hover:bg-[#f6fffe] transition-colors cursor-pointer">
       <input type="file" id="imagen-input" name="imagen" accept="image/*" class="hidden">
 
-      {{-- Instrucciones --}}
       <div id="upload-prompt" class="space-y-3">
         <div class="mx-auto w-16 h-16 bg-[#90D1CA]/20 rounded-full flex items-center justify-center">
           <svg class="w-8 h-8 text-[#129990]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,15 +75,13 @@
         <p class="text-sm text-gray-600">JPG, PNG o WebP • Máximo 2 MB</p>
       </div>
 
-      {{-- Vista previa --}}
       <div id="preview-container" class="hidden">
         <div class="relative inline-block">
           <img id="preview-image" src="" alt="Vista previa" class="max-h-64 rounded-lg shadow-md border border-[#129990]">
           <button type="button" id="remove-preview"
                   class="absolute -top-3 -right-3 bg-[#129990] text-white rounded-full p-2 hover:bg-[#0f7a73] transition shadow-lg">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
           </button>
         </div>
@@ -98,9 +90,9 @@
     </div>
   </div>
 
-  {{-- =====================
+  {{-- =========================
        Configuración
-       ===================== --}}
+       ========================= --}}
   <div class="rounded-xl border-2 border-[#129990] p-6 shadow-sm bg-white">
     <h3 class="text-lg font-bold text-[#129990] mb-4 flex items-center">
       <svg class="w-5 h-5 mr-2 text-[#129990]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,12 +103,9 @@
     </h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800">
-
       {{-- Categoría --}}
       <div>
-        <label class="block text-sm font-semibold mb-1 text-gray-800">
-          Categoría <span class="text-[#129990]">*</span>
-        </label>
+        <label class="block text-sm font-semibold mb-1 text-gray-800">Categoría <span class="text-[#129990]">*</span></label>
         @php $cat = old('categoria', $publication->categoria ?? ''); @endphp
         <select name="categoria"
                 class="block w-full rounded-lg border-2 border-[#129990] px-4 py-2.5 bg-white focus:outline-none focus:ring-0 focus:border-[#129990]"
@@ -133,9 +122,7 @@
 
       {{-- Estado --}}
       <div>
-        <label class="block text-sm font-semibold mb-1 text-gray-800">
-          Estado <span class="text-[#129990]">*</span>
-        </label>
+        <label class="block text-sm font-semibold mb-1 text-gray-800">Estado <span class="text-[#129990]">*</span></label>
         @php $estado = old('estado', $publication->estado ?? 'publicado'); @endphp
         <select name="estado"
                 class="block w-full rounded-lg border-2 border-[#129990] px-4 py-2.5 bg-white focus:outline-none focus:ring-0 focus:border-[#129990]"
@@ -147,30 +134,41 @@
     </div>
   </div>
 
-{{-- ===================
-     Botones de Acción
-     =================== --}}
-<div class="flex items-center justify-end gap-4 mt-8">
-  {{-- Botón Cancelar --}}
-  <a href="{{ route('publications.index') }}"
-     class="inline-flex items-center px-6 py-3 rounded-lg bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition">
-    Cancelar
-  </a>
+  {{-- =========================
+       Acciones (UNA SOLA FILA)
+       ========================= --}}
+  <div class="mt-6 flex items-center justify-end gap-3">
 
-  {{-- Botón Guardar / Actualizar --}}
-  <button type="submit"
-          class="inline-flex items-center px-6 py-3 rounded-lg font-semibold shadow-md
-                 bg-[#129990] text-black hover:bg-[#90D1CA] transition-all duration-200 border border-[#129990]">
-    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-    </svg>
-    {{ isset($publication) ? 'Actualizar publicación' : 'Guardar publicación' }}
-  </button>
+    {{-- Eliminar (solo si estamos editando) --}}
+    @if(isset($publication) && $publication->exists)
+      <button type="button"
+              class="openDelete inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-600 text-white font-semibold hover:opacity-95 shadow">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m-1-3H10a1 1 0 00-1 1v2h8V5a1 1 0 00-1-1z"/>
+        </svg>
+        Eliminar publicación
+      </button>
+    @endif
+
+    {{-- Cancelar --}}
+    <a href="{{ route('publications.index') }}"
+       class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-50">
+      Cancelar
+    </a>
+
+    {{-- Guardar / Actualizar --}}
+    <button type="submit"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--utesc-base)] text-white font-semibold hover:opacity-95 shadow">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+      </svg>
+      {{ isset($publication) && $publication->exists ? 'Actualizar publicación' : 'Crear publicación' }}
+    </button>
+  </div>
 </div>
 
-</div>
-
-{{-- Script para vista previa --}}
+{{-- Scripts de la dropzone (igual que ya tenías) --}}
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const drop = document.getElementById('dropzone');
@@ -181,11 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileName = document.getElementById('file-name');
   const removeBtn = document.getElementById('remove-preview');
 
+  if(!drop) return;
+
   drop.addEventListener('click', () => input.click());
   input.addEventListener('change', e => show(e.target.files[0]));
-
   drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('bg-[#f0fffd]'); });
-  drop.addEventListener('dragleave', e => drop.classList.remove('bg-[#f0fffd]'));
+  drop.addEventListener('dragleave', () => drop.classList.remove('bg-[#f0fffd]'));
   drop.addEventListener('drop', e => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -206,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   }
 
-  removeBtn.addEventListener('click', e=>{
+  removeBtn?.addEventListener('click', e=>{
     e.stopPropagation();
     input.value = '';
     img.src = '';

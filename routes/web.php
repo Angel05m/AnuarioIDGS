@@ -9,9 +9,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Inicio => feed con todas las publicaciones (por defecto 'publicado')
+Route::get('/dashboard', [PublicationController::class, 'feed'])
+
+
+    ->middleware(['auth','verified'])
+    ->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,8 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/galeria-detalle', function () {
         return view('galeria.detalle');
     })->name('bodega.detalle');
+    
+    Route::get('/publicar-imagen', function () {
+        return view('galeria.publicar_imagen');
+    })->name('bodega.publicar_imagen');
 
-    // ----- PUBLICACIONES (Anuario / Galería) -----
+    // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);
     Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
         ->name('publications.like');

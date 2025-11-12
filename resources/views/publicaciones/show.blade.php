@@ -5,36 +5,78 @@
 @push('styles')
 <style>
   :root{
-    --utesc-base:#129990;   /* verde oscuro */
-    --utesc-light:#90D1CA;  /* verde claro */
+    --utesc-base:#129990;   /* verde oscuro institucional */
+    --utesc-light:#90D1CA;  /* verde celeste institucional */
   }
-  .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(18,153,144,.35)}
-  .badge{display:inline-flex;align-items:center;font-weight:700;border-radius:9999px;padding:.4rem .9rem}
-  .badge-green{background:var(--utesc-base);color:#fff;box-shadow:0 8px 20px rgba(18,153,144,.25)}
-  .badge-soft{background:linear-gradient(90deg,var(--utesc-light),var(--utesc-base));color:#083f3b;border:1px solid rgba(255,255,255,.5)}
-  .title{color:#0f172a}
-  .meta{color:#334155}
-  .prose{color:#0f172a;line-height:1.8;font-size:1.125rem}
-  .prose p + p{margin-top:1rem}
-  .cover{width:100%;max-height:560px;object-fit:cover;border-radius:1rem}
-  .shadow-xl-soft{box-shadow:0 20px 45px rgba(2,30,25,.18)}
-  .chip{display:inline-flex;align-items:center;border:1px solid rgba(18,153,144,.35);color:#0f3a36;background:#fff;border-radius:9999px;padding:.35rem .75rem;font-weight:700}
+
+  /* ======== Tarjeta blanca principal ======== */
+  .detail-card{
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:1.25rem;
+    box-shadow:0 8px 28px rgba(2,8,23,.08);
+    color:#0f172a;
+  }
+
+  .cover{
+    width:100%;
+    max-height:560px;
+    object-fit:cover;
+    border-radius:1rem;
+    box-shadow:0 20px 45px rgba(2,30,25,.18);
+    border:1px solid rgba(18,153,144,.25);
+  }
+
+  /* ======== Badges ======== */
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    font-weight:700;
+    border-radius:9999px;
+    padding:.4rem .9rem;
+  }
+  .badge-green{
+    background:var(--utesc-base);
+    color:#fff;
+    box-shadow:0 8px 20px rgba(18,153,144,.25);
+  }
+  .badge-soft{
+    background:linear-gradient(90deg,var(--utesc-light),var(--utesc-base));
+    color:#083f3b;
+    border:1px solid rgba(255,255,255,.5);
+  }
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid rgba(18,153,144,.35);
+    color:#0f3a36;
+    background:#fff;
+    border-radius:9999px;
+    padding:.35rem .75rem;
+    font-weight:700;
+  }
+
+  /* ======== Texto ======== */
+  .title{color:#0f172a;}
+  .meta{color:#334155;}
+  .prose{color:#0f172a;line-height:1.8;font-size:1.125rem;}
+  .prose p + p{margin-top:1rem;}
 </style>
 @endpush
 
 @section('content')
+
   {{-- Portada (si existe) --}}
-@if($publication->image_url)
-  <div class="mb-8">
-    <img src="{{ $publication->image_url }}"
-         alt="{{ $publication->titulo }}"
-         class="cover shadow-xl-soft ring-1 ring-[rgba(18,153,144,.25)] mx-auto block">
-  </div>
-@endif
+  @if($publication->image_url)
+    <div class="mb-8">
+      <img src="{{ $publication->image_url }}"
+           alt="{{ $publication->titulo }}"
+           class="cover mx-auto block">
+    </div>
+  @endif
 
-
-  {{-- Tarjeta principal --}}
-  <article class="glass rounded-2xl p-6 md:p-8 shadow-2xl text-slate-900">
+  {{-- Tarjeta principal blanca --}}
+  <article class="detail-card p-6 md:p-8">
     {{-- Badges / meta --}}
     <div class="flex flex-wrap items-center gap-3 mb-6">
       @if($publication->estado === 'publicado')
@@ -43,13 +85,11 @@
           Publicado
         </span>
       @else
-        <span class="badge chip">📝 Borrador</span>
-      @endif>
+        <span class="chip">📝 Borrador</span>
+      @endif
 
       @if($publication->categoria)
-        <span class="badge badge-soft">
-          {{ $publication->categoria }}
-        </span>
+        <span class="badge badge-soft">{{ $publication->categoria }}</span>
       @endif
 
       <span class="chip">
@@ -69,7 +109,8 @@
     {{-- Descripción corta (si hay) --}}
     @if($publication->descripcion)
       <div class="mb-6 rounded-xl border-l-4 p-4"
-           style="border-color: var(--utesc-base); background: linear-gradient(90deg, rgba(144,209,202,.25), rgba(18,153,144,.12));">
+           style="border-color: var(--utesc-base);
+                  background: linear-gradient(90deg, rgba(144,209,202,.25), rgba(18,153,144,.12));">
         <p class="text-lg italic">{{ $publication->descripcion }}</p>
       </div>
     @endif
