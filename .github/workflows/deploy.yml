@@ -14,6 +14,9 @@ jobs:
 
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader
+
+      - name: Instal Node.js
+        run: npm install
         
       - name: Install Tailwind
         run: npm install tailwindcss @tailwindcss/vite
