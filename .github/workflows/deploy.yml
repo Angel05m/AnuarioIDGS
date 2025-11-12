@@ -21,7 +21,7 @@ jobs:
       - name: Install Tailwind
         run: npm install tailwindcss @tailwindcss/vite
 
-      - name: Build Tailwind CSS
+      - name: Build assets
         run: npm run build
 
       - name: Deploy backend (Laravel)
