@@ -7,9 +7,22 @@
       --utesc-light:#90D1CA;
     }
 
-    .card-shell{ padding:1px; border-radius:1rem;
-      background:linear-gradient(135deg,var(--utesc-base),var(--utesc-light)); }
-    .card-inner{ background:#fff; border-radius:.95rem; }
+    /* Tarjeta superior delgada (igual que index) */
+    .card-shell{
+      padding:0.5px;                    /* Borde más delgado */
+      border-radius:1rem;
+      background:linear-gradient(135deg,var(--utesc-base),var(--utesc-light));
+    }
+    .card-inner{
+      background:#fff;
+      border-radius:.95rem;
+      padding:1.25rem 1.5rem;           /* reduce altura interior */
+    }
+    /* Reduce el margen superior del bloque principal */
+    .py-8 {
+      padding-top: 1.5rem !important;   /* antes eran 2rem (py-8) */
+    }
+
 
     .btn-primary{
       background:var(--utesc-base); color:#fff; border-radius:.8rem;
