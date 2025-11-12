@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/galeria-detalle', function () {
         return view('galeria.detalle');
     })->name('bodega.detalle');
+    
+    Route::get('/publicar-imagen', function () {
+        return view('galeria.publicar_imagen');
+    })->name('bodega.publicar_imagen');
 
     // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);

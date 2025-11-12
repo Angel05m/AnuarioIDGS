@@ -5,6 +5,9 @@
                 {{ __('Galería de publicaciones') }}
             </h2>
 
+            <a href="{{route('bodega.publicar_imagen')}}">
+                Publicar imagenes
+            </a>
             <button onclick="window.history.back()"
                 class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-200 cursor-pointer">
                 Volver
@@ -12,7 +15,7 @@
         </div>
     </x-slot>
 
-    <div class="p-12">
+    <div class="p-10">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="grid gap-4">
                 <div>
