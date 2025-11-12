@@ -49,9 +49,9 @@ class BolsaTrabajoController extends Controller
 
             $trabajo->save();
 
-            return back()->with('success', 'Trabajo publicado correctamente.');
+            return redirect()->route('trabajos.listado')->with('success', 'Publicación exitosa.');
         } catch (\Throwable $th) {
-            return back()->withErrors('Ocurrió un error al guardar el trabajo: ' . $th->getMessage());
+            return back()->withErrors('Ocurrió un error al guardar el trabajo,');
         }
     }
 

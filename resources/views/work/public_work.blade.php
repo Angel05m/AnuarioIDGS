@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Publicación de trabajo') }}
-        </h2>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-white leading-tight">
+                {{ __('Publicación de trabajo') }}
+            </h2>
+            <button onclick="window.history.back()"
+                class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-200 cursor-pointer">
+                Cancelar
+            </button>
+        </div>
+
     </x-slot>
 
     <div class="py-12">
@@ -28,8 +35,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('guardar.trabajo') }}" method="post"
-                        class="flex flex-col ">
+                    <form action="{{ route('guardar.trabajo') }}" method="post" class="flex flex-col ">
                         @csrf
                         <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}">
 
@@ -51,13 +57,15 @@
 
                             <div>
                                 <label class="block text-gray-700">Teléfono de la empresa:</label>
-                                <input type="text" name="telefono" required placeholder="Ej: 6699779922" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+                                <input type="text" name="telefono" required placeholder="Ej: 6699779922"
+                                    maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
                             </div>
 
                             <div>
                                 <label class="block text-gray-700">Dirección:</label>
-                                <input type="text" name="direccion" required placeholder="Ej: Pedro Prado Cordoba. Escuinapa"
+                                <input type="text" name="direccion" required
+                                    placeholder="Ej: Pedro Prado Cordoba. Escuinapa"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
                             </div>
                         </div>
@@ -74,8 +82,10 @@
 
                             <div>
                                 <label class="block text-gray-700">Descripción del puesto:</label>
-                                <textarea class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
-                                    name="descripcion" required id="" cols="30" rows="10" placeholder="Agrega contenido detallado, promoviendo el puesto"></textarea>
+                                <textarea
+                                    class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                    name="descripcion" required id="" cols="30" rows="10"
+                                    placeholder="Agrega contenido detallado, promoviendo el puesto"></textarea>
                             </div>
 
                             <div>
@@ -86,15 +96,17 @@
 
                             <div>
                                 <label class="block text-gray-700">Requisitos:</label>
-                                <textarea 
-                                    class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" 
-                                    name="requisito" required id="" cols="30" rows="10" placeholder="Detalla los requisitos que el postulante necesite para trabajar"> 
+                                <textarea
+                                    class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                    name="requisito" required id="" cols="30" rows="10"
+                                    placeholder="Detalla los requisitos que el postulante necesite para trabajar"> 
                                 </textarea>
                             </div>
 
                             <div>
                                 <label class="block text-gray-700">Salario:</label>
-                                <input type="number" name="salario" required  min="0" placeholder="Ej: 20000" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)"
+                                <input type="number" name="salario" required min="0" placeholder="Ej: 20000"
+                                    maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)"
                                     class="mt-1 w-full border border-gray-400 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
                             </div>
                         </div>

@@ -11,19 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bolsa_trabajo', function (Blueprint $table) {
-            $table->id('pk_bolsa_trabajo');
+        Schema::create('galeria', function (Blueprint $table) {
+            $table->id('pk_galeria');
             $table->unsignedBigInteger('fk_usuario');
-            $table->string('nombre_empresa');
-            $table->string('correo');
-            $table->string('telefono');
-            $table->string('puesto');
-            $table->text('descripcion');
-            $table->string('direccion');
-            $table->string('tipo_empleo');
-            $table->text('requisito');
-            $table->integer('salario');
-            $table->boolean('estatus')->default(true);
+            $table->string('titulo');
+            $table->text('descripcion')->nullable();
+            $table->string('ruta_imagen', 2048);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_usuario')->references('id')->on('users')->onDelete('cascade');
@@ -35,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('galeria');
     }
 };
