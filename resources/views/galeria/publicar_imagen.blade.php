@@ -12,7 +12,7 @@
         </div>
     </x-slot>
     <div class="bg-white p-4 border border-gray-300 rounded-lg shadow">
-        <form action="" method="post" enctype="multipart/form-data" class="flex flex-col">
+        <form action="{{route('galeria.guardar_imagenes')}}" method="post" enctype="multipart/form-data" class="flex flex-col">
             @csrf
             <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}">
             <div class="flex flex-col gap-2">
@@ -25,21 +25,27 @@
                 <textarea class="border border-gray-300 p-3 rounded-lg" name="descripcion" id="" cols="30" rows="10"></textarea>
             </div>
 
-            <label for="fileInput">Subir imágenes</label>
-            <!-- Zona Dropzone -->
+            <label for="fileInput" class="block mb-2 font-medium text-gray-700">Subir imágenes</label>
             <div id="dropzone"
-                class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-                <p class="text-gray-600">Arrastra tus imágenes aquí o <span class="text-blue-500 font-semibold">haz clic
-                        para seleccionar</span></p>
+                class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition cursor-pointer relative">
+
+                <!-- Contenido inicial -->
+                <div id="placeholder" class="flex flex-col items-center justify-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+                    </svg>
+                    <p class="text-gray-600">Arrastra tus imágenes aquí o
+                        <span class="text-blue-500 font-semibold">haz clic para seleccionar</span>
+                    </p>
+                </div>
+
                 <input id="fileInput" type="file" name="imagenes[]" accept="image/*" multiple class="hidden">
+
+                <!-- Previsualizaciones dentro del dropzone -->
+                <div id="preview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full"></div>
             </div>
-            <!-- Previsualizaciones -->
-            <div id="preview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
 
             <div class="flex w-full justify-center mt-4">
                 <button type="submit"
@@ -55,6 +61,8 @@
     const dropzone = document.getElementById('dropzone');
     const input = document.getElementById('fileInput');
     const preview = document.getElementById('preview');
+    const placeholder = document.getElementById('placeholder');
+    let filesArray = [];
 
     // Click en el contenedor abre el input
     dropzone.addEventListener('click', () => input.click());
@@ -72,26 +80,49 @@
     dropzone.addEventListener('drop', e => {
         e.preventDefault();
         dropzone.classList.remove('border-blue-500', 'bg-blue-50');
-        input.files = e.dataTransfer.files;
-        mostrarPrevisualizacion(e.dataTransfer.files);
+        const newFiles = Array.from(e.dataTransfer.files);
+        filesArray = filesArray.concat(newFiles);
+        mostrarPrevisualizacion();
     });
 
-    input.addEventListener('change', e => mostrarPrevisualizacion(e.target.files));
+    input.addEventListener('change', e => {
+        const newFiles = Array.from(e.target.files);
+        filesArray = filesArray.concat(newFiles);
+        mostrarPrevisualizacion();
+    });
 
-    // Mostrar miniaturas
-    function mostrarPrevisualizacion(files) {
+    function mostrarPrevisualizacion() {
         preview.innerHTML = '';
-        Array.from(files).forEach(file => {
+        placeholder.style.display = filesArray.length > 0 ? 'none' : 'flex';
+
+        filesArray.forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = e => {
                 const div = document.createElement('div');
                 div.className = "relative group";
                 div.innerHTML = `
-                    <img src="${e.target.result}" alt="preview" class="w-full h-32 object-cover rounded-lg shadow-sm">
+                    <img src="${e.target.result}" alt="preview"
+                        class="w-full  object-cover rounded-lg shadow-sm border border-gray-200">
+                    <button type="button" data-index="${index}"
+                        class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 opacity-0 group-hover:opacity-100 transition cursor-pointer">
+                        ✕
+                    </button>
                 `;
                 preview.appendChild(div);
             };
             reader.readAsDataURL(file);
         });
+
+        // Botones de eliminación (con stopPropagation)
+        setTimeout(() => {
+            document.querySelectorAll('#preview button').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.stopPropagation(); // <- evita que se abra el panel de selección
+                    const index = parseInt(e.target.dataset.index);
+                    filesArray.splice(index, 1);
+                    mostrarPrevisualizacion();
+                });
+            });
+        }, 50);
     }
 </script>

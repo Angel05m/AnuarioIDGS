@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_usuario');
             $table->string('titulo');
             $table->text('descripcion')->nullable();
-            $table->string('ruta_imagen', 2048);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_usuario')->references('id')->on('users')->onDelete('cascade');
