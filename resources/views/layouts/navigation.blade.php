@@ -19,7 +19,7 @@
                     <x-nav-link class="text-white" :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
                         {{ __('Trabajos') }}
                     </x-nav-link>
-                    <x-nav-link class="text-white" :href="route('bodega.galeria')" :active="request()->routeIs('bodega.galeria')">
+                    <x-nav-link class="text-white" :href="route('galeria.bodega')" :active="request()->routeIs('bodega.galeria')">
                         {{ __('Galeria') }}
                     </x-nav-link>
                     {{-- BOTÓN: Mis publicaciones --}}
