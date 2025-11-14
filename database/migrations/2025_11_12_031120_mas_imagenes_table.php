@@ -11,7 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('mas_imagenes', function (Blueprint $table) {
+            $table->id('pk_mas_imagenes');
+            $table->unsignedBigInteger('fk_galeria');
+            $table->string('ruta_imagen', 2048);
+            $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('fk_galeria')->references('pk_galeria')->on('galeria')->onDelete('cascade');
+        });
     }
 
     /**
