@@ -35,10 +35,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/trabajo/{id}/actualizar', [BolsaTrabajoController::class, 'actualizar_trabajo'])->name('trabajo.actualizar');
 
     // GALERIA
-    Route::get('/galeria-usuarios', function () {
-        return view('galeria.bodega');
-    })->name('bodega.galeria');
-
     Route::get('/galeria-detalle', function () {
         return view('galeria.detalle');
     })->name('bodega.detalle');
@@ -46,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/publicar-imagen', function () {
         return view('galeria.publicar_imagen');
     })->name('bodega.publicar_imagen');
+
+    Route::post('/guardar-imagenes', [App\Http\Controllers\GaleriaController::class, 'guardar'])->name('galeria.guardar_imagenes');
+    Route::get('/bodega-galerias', [App\Http\Controllers\GaleriaController::class, 'bodega'])->name('galeria.bodega');
+    Route::get('/detalle-galeria/{id}', [App\Http\Controllers\GaleriaController::class, 'detalle'])->name('galeria.detalle');
 
     // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);
