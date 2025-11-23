@@ -7,7 +7,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-white" />
+                        <x-application-logo/>
                     </a>
                 </div>
 
@@ -119,8 +119,8 @@
                 {{ __('Trabajo') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('trabajos.listado')" :active="request()->routeIs('trabajos.listado')">
-                {{ __('Trabajos') }}
+            <x-responsive-nav-link :href="route('galeria.bodega')" :active="request()->routeIs('galeria.bodega')">
+                {{ __('Galería') }}
             </x-responsive-nav-link>
 
             {{-- Mis publicaciones (móvil) --}}
@@ -133,8 +133,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-800">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
@@ -144,7 +144,7 @@
 
                 <div x-data="{ contenidoOpen: false }" class="relative">
                     <button @click="contenidoOpen = !contenidoOpen"
-                        class="w-full font-medium sm:text-sm text-gray-600 flex justify-between px-4 py-2 hover:bg-gray-100">
+                        class="w-full font-medium sm:text-sm text-white flex justify-between px-4 py-2 hover:bg-gray-100">
                         {{ __('Mis publicaciones') }}
                     </button>
 

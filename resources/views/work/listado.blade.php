@@ -1,25 +1,28 @@
+@section('title', 'Publicaciones de oferta laboral | Anuario IDGS')
+
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">
+        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-3 w-full">
+            <h2 class="sm:basis-52 font-semibold text-2xl sm:text-xl text-teal-700 leading-tight">
                 {{ __('Ofertas de trabajo') }}
             </h2>
+            <div class="flex flex-row gap-3 w-full">
+                <input id="buscadorTrabajo"
+                    class="bg-gray-200 text-gray-800 broder w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-600 px-2 py-2 rounded-lg shadow"
+                    type="text" placeholder="Buscar trabajo...">
 
-            <input id="buscadorTrabajo"
-                class="bg-white text-gray-700 broder w-3xl border-gray-200 px-2 py-2 rounded-lg shadow" type="text"
-                placeholder="Buscar trabajo...">
-
-            <a href="{{ route('publicWork') }}"
-                class="bg-teal-800 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition duration-200">
-                + Publicar trabajo
-            </a>
+                <a href="{{ route('publicWork') }}"
+                    class="bg-teal-600 text-white text-[10px] sm:text-base p-2.5 rounded-lg hover:bg-teal-700 transition duration-200">
+                    Publicar
+                </a>
+            </div>
         </div>
     </x-slot>
 
-    <div class="py-12 bg-[#0D2A3F] min-h-screen">
+    <div class=" bg-[#0D2A3F] min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+                <div class="sm:p-2 text-gray-900">
 
                     {{-- Mensajes de éxito --}}
                     @if (session('success'))
@@ -38,14 +41,16 @@
 
                                         {{-- Información del trabajo --}}
                                         <div class="flex flex-col">
-                                            <h3 class="text-lg font-semibold text-gray-900">{{ $trabajo->puesto }}</h3>
+                                            <h3 class="text-lg font-semibold text-gray-900">
+                                                {{ $trabajo->puesto ?? 'No se registro puesto de trabajo' }}</h3>
                                             <p class="text-gray-600 text-sm font-medium">{{ $trabajo->nombre_empresa }}
                                             </p>
-                                            <p class="text-gray-500 text-sm mt-1">{{ $trabajo->direccion }}</p>
+                                            <p class="text-gray-500 text-sm mt-1">
+                                                {{ $trabajo->direccion ?? 'No se registro dirección' }}</p>
 
                                             <div class="flex flex-wrap gap-2 mt-3">
                                                 <span class="px-2 py-1 text-xs bg-teal-100 text-teal-700 rounded-md">
-                                                    {{ $trabajo->tipo_empleo }}
+                                                    {{ $trabajo->tipo_empleo ?? 'No se registro el tipo de empleo' }}
                                                 </span>
                                                 <span class="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-md">
                                                     Publicado {{ $trabajo->created_at->diffForHumans() }}
@@ -55,7 +60,7 @@
                                     </div>
 
                                     {{-- Información secundaria --}}
-                                    <div class="mt-4 sm:mt-0 text-right sm:w-1/4">
+                                    <div class="flex sm:flex-none flex-col justify-end w-full mt-4 sm:mt-0 text-right sm:w-1/4">
                                         <p class="text-teal-700 font-semibold text-lg">
                                             ${{ number_format($trabajo->salario, 2) }}
                                         </p>

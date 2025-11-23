@@ -1,8 +1,13 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+<link rel="icon" href="{{ asset('image/logo_anuario.png') }}">
+<title>Inicio de Sesión | Anuario IDGS</title>
 
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+    <div class="flex justify-center items-center">
+        <img src="{{ asset('image/logo_anuario.png') }}" alt="" class="w-50 h-50">
+    </div>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf

@@ -1,7 +1,9 @@
+@section('title', 'Publicacón de imagenes | Anuario IDGS')
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-2xl text-white leading-tight">
+            <h2 class="font-semibold text-xl sm:text-2xl text-teal-600 leading-tight">
                 {{ __('Publicaciones de imagenes') }}
             </h2>
 
@@ -11,47 +13,61 @@
             </button>
         </div>
     </x-slot>
-    <div class="bg-white p-4 border border-gray-300 rounded-lg shadow">
-        <form action="{{route('galeria.guardar_imagenes')}}" method="post" enctype="multipart/form-data" class="flex flex-col">
-            @csrf
-            <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}">
-            <div class="flex flex-col gap-2">
-                <label for="" class="">Titulo</label>
-                <input class="border border-gray-300 p-3 rounded-lg" type="text" name="titulo" required>
-            </div>
+    <div class="sm:p-5">
+        <div class="bg-white p-4 border border-gray-300 rounded-lg shadow">
+            {{-- NOTIFICACION DE ERROR --}}
+            @if ($errors->any())
+                <div id="success-message" class="mb-4 p-2 bg-red-200 text-red-600 rounded">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <div class="flex flex-col gap-2">
-                <label for="" class="">Descripción</label>
-                <textarea class="border border-gray-300 p-3 rounded-lg" name="descripcion" id="" cols="30" rows="10"></textarea>
-            </div>
-
-            <label for="fileInput" class="block mb-2 font-medium text-gray-700">Subir imágenes</label>
-            <div id="dropzone"
-                class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition cursor-pointer relative">
-
-                <!-- Contenido inicial -->
-                <div id="placeholder" class="flex flex-col items-center justify-center pointer-events-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
-                    </svg>
-                    <p class="text-gray-600">Arrastra tus imágenes aquí o
-                        <span class="text-blue-500 font-semibold">haz clic para seleccionar</span>
-                    </p>
+            <form action="{{ route('galeria.guardar_imagenes') }}" method="post" enctype="multipart/form-data"
+                class="flex flex-col">
+                @csrf
+                <input type="hidden" name="fk_usuario" value="{{ Auth::id() }}">
+                <div class="flex flex-col gap-2">
+                    <label for="" class="">Titulo</label>
+                    <input class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" type="text" name="titulo" required>
                 </div>
 
-                <input id="fileInput" type="file" name="imagenes[]" accept="image/*" multiple class="hidden">
+                <div class="flex flex-col gap-2">
+                    <label for="" class="">Descripción</label>
+                    <textarea class="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" name="descripcion" id="" cols="30" rows="10"></textarea>
+                </div>
 
-                <!-- Previsualizaciones dentro del dropzone -->
-                <div id="preview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full"></div>
-            </div>
+                <label for="fileInput" class="block mb-2 font-medium text-gray-700">Subir imágenes</label>
+                <div id="dropzone"
+                    class="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center bg-gray-50 hover:bg-gray-100 transition cursor-pointer relative">
 
-            <div class="flex w-full justify-center mt-4">
-                <button type="submit"
-                    class="w-1/4 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition duration-200 cursor-pointer">Guardar</button>
-            </div>
-        </form>
+                    <!-- Contenido inicial -->
+                    <div id="placeholder" class="flex flex-col items-center justify-center pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                        <p class="text-gray-600">Arrastra tus imágenes aquí o
+                            <span class="text-blue-500 font-semibold">haz clic para seleccionar</span>
+                        </p>
+                    </div>
+
+                    <input id="fileInput" type="file" name="imagenes[]" accept="image/*" multiple class="hidden">
+
+                    <!-- Previsualizaciones dentro del dropzone -->
+                    <div id="preview" class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full"></div>
+                </div>
+
+                <div class="flex w-full justify-center items-center mt-4">
+                    <button type="submit"
+                        class="w-full sm:w-lg bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition duration-200 cursor-pointer">Guardar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
 </x-app-layout>
@@ -63,6 +79,15 @@
     const preview = document.getElementById('preview');
     const placeholder = document.getElementById('placeholder');
     let filesArray = [];
+
+    setTimeout(function() {
+        const msg = document.getElementById('success-message');
+        if (msg) {
+            msg.style.transition = "opacity 0.5s ease";
+            msg.style.opacity = 0;
+            setTimeout(() => msg.remove(), 300);
+        }
+    }, 5000);
 
     // Click en el contenedor abre el input
     dropzone.addEventListener('click', () => input.click());
