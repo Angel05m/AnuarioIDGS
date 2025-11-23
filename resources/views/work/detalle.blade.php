@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight">
-                {{ $trabajo->puesto }}
+            <h2 class="font-semibold text-xl sm:text-2xl text-teal-600 leading-tight">
+                Detalle de Publicación
             </h2>
             <button onclick="window.history.back()"
                 class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-200 cursor-pointer">
@@ -11,15 +11,15 @@
         </div>
     </x-slot>
 
-    <div class="py-12 bg-[#0D2A3F] min-h-screen">
+    <div class="sm:py-5 bg-[#0D2A3F] ">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
+            <div class="bg-white overflow-hidden shadow-2xl rounded-lg p-8">
                 <div class="flex flex-col sm:flex-row gap-6 items-start">
                     {{-- TITULO DE LA PUBLICACION --}}
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">{{ $trabajo->puesto }}</h1>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ $trabajo->puesto ?? "No se registro puesto de trabajo"}}</h1>
                         <p class="text-gray-600 text-lg">{{ $trabajo->nombre_empresa }}</p>
-                        <p class="text-gray-500 text-sm mt-1">{{ $trabajo->direccion }}</p>
+                        <p class="text-gray-500 text-sm mt-1">{{ $trabajo->direccion ?? "No se registro dirección"}}</p>
                         <p class="text-sm mt-2 text-teal-700 font-semibold">
                             ${{ number_format($trabajo->salario, 2) }} MXN
                         </p>
@@ -31,20 +31,20 @@
                 {{-- DESCRIPCION DE PUESTO --}}
                 <div class="mb-6">
                     <h2 class="text-lg font-semibold text-gray-800 mb-2">Descripción del puesto</h2>
-                    <p class="text-gray-700 leading-relaxed">{{ $trabajo->descripcion }}</p>
+                    <p class="text-gray-700 leading-relaxed">{{ $trabajo->descripcion ?? "No se registro descripción del puesto" }}</p>
                 </div>
 
                 {{-- REQUISITOS --}}
                 <div class="mb-6">
                     <h2 class="text-lg font-semibold text-gray-800 mb-2">Requisitos</h2>
-                    <p class="text-gray-700 leading-relaxed">{{ $trabajo->requisito }}</p>
+                    <p class="text-gray-700 leading-relaxed">{{ $trabajo->requisito ?? "No se registraron requisitos del trabajo" }}</p>
                 </div>
 
                 {{-- INFORMACION ADICIONAL --}}
                 <div class="mb-6 grid sm:grid-cols-2 gap-4">
                     <div>
                         <h2 class="text-lg font-semibold text-gray-800 mb-1">Tipo de empleo</h2>
-                        <p class="text-gray-700">{{ $trabajo->tipo_empleo }}</p>
+                        <p class="text-gray-700">{{ $trabajo->tipo_empleo ?? "No se registro el tipo de empleo" }}</p>
                     </div>
                     <div>
                         <h2 class="text-lg font-semibold text-gray-800 mb-1">Publicado por</h2>
@@ -55,8 +55,8 @@
                 {{-- CONTACTOS --}}
                 <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
                     <h3 class="font-semibold text-teal-700 mb-1">Contacto</h3>
-                    <p class="text-gray-700 text-sm">{{ $trabajo->correo }}</p>
-                    <p class="text-gray-700 text-sm">{{ $trabajo->telefono }}</p>
+                    <p class="text-gray-700 text-sm">{{ $trabajo->correo ?? "No se registro correo registrado" }}</p>
+                    <p class="text-gray-700 text-sm">{{ $trabajo->telefono ?? "No se registro el numero de telefono"}}</p>
                 </div>
             </div>
         </div>

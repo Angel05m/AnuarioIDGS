@@ -13,39 +13,30 @@ class BolsaTrabajoController extends Controller
     {
         $validated = $request->validate([
             'nombre_empresa' => 'required|string|max:200',
-            'correo' => 'required|email|max:200',
-            'telefono' => 'required|string|max:15',
-            'puesto' => 'required|string|max:200',
-            'descripcion' => 'required|string',
-            'direccion' => 'required|string|max:200',
-            'tipo_empleo' => 'required|string|max:200',
-            'requisito' => 'required|string',
-            'salario' => 'required|numeric|min:0'
+            'correo' => 'nullable|email|max:200',
+            'telefono' => 'nullable|string|max:15',
+            'puesto' => 'nullable|string|max:200',
+            'descripcion' => 'nullable|string',
+            'direccion' => 'nullable|string|max:200',
+            'tipo_empleo' => 'nullable|string|max:200',
+            'requisito' => 'nullable|string',
+            'salario' => 'nullable|numeric|min:0'
         ], [
             'nombre_empresa.required' => 'El nombre de la empresa es requerido',
-            'correo.required' => 'Correo requerido',
-            'correo.email' => 'El correo debe ser válido',
-            'telefono.required' => 'Teléfono requerido',
-            'puesto.required' => 'Puesto del trabajo requerido',
-            'descripcion.required' => 'Es obligatorio una descripción',
-            'direccion.required' => 'La dirección es obligatoria',
-            'tipo_empleo.required' => 'El tipo de empleo es obligatorio',
-            'requisito.required' => 'Es obligatorio el requisito',
-            'salario.required' => 'Salario obligatorio'
         ]);
 
         try {
             $trabajo = new BolsaTrabajos();
             $trabajo->fk_usuario = Auth::id();
             $trabajo->nombre_empresa = $validated['nombre_empresa'];
-            $trabajo->correo = $validated['correo'];
-            $trabajo->telefono = $validated['telefono'];
-            $trabajo->puesto = $validated['puesto'];
-            $trabajo->descripcion = $validated['descripcion'];
-            $trabajo->direccion = $validated['direccion'];
-            $trabajo->tipo_empleo = $validated['tipo_empleo'];
-            $trabajo->requisito = $validated['requisito'];
-            $trabajo->salario = $validated['salario'];
+            $trabajo->correo = $validated['correo'] ?? null;
+            $trabajo->telefono = $validated['telefono'] ?? null;
+            $trabajo->puesto = $validated['puesto'] ?? null;
+            $trabajo->descripcion = $validated['descripcion'] ?? null;
+            $trabajo->direccion = $validated['direccion'] ?? null;
+            $trabajo->tipo_empleo = $validated['tipo_empleo'] ?? null;
+            $trabajo->requisito = $validated['requisito'] ?? null;
+            $trabajo->salario = $validated['salario'] ?? null;
 
             $trabajo->save();
 
@@ -103,25 +94,16 @@ class BolsaTrabajoController extends Controller
 
         $validated = $request->validate([
             'nombre_empresa' => 'required|string|max:200',
-            'correo' => 'required|email|max:200',
-            'telefono' => 'required|string|max:15',
-            'puesto' => 'required|string|max:200',
-            'descripcion' => 'required|string',
-            'direccion' => 'required|string|max:200',
-            'tipo_empleo' => 'required|string|max:200',
-            'requisito' => 'required|string',
-            'salario' => 'required|numeric|min:0'
+            'correo' => 'nullable|email|max:200',
+            'telefono' => 'nullable|string|max:15',
+            'puesto' => 'nullable|string|max:200',
+            'descripcion' => 'nullable|string',
+            'direccion' => 'nullable|string|max:200',
+            'tipo_empleo' => 'nullable|string|max:200',
+            'requisito' => 'nullable|string',
+            'salario' => 'nullable|numeric|min:0'
         ],[
             'nombre_empresa.required' => 'El nombre de la empresa es requerido',
-            'correo.required' => 'Correo requerido',
-            'correo.email' => 'El correo debe ser válido',
-            'telefono.required' => 'Teléfono requerido',
-            'puesto.required' => 'Puesto del trabajo requerido',
-            'descripcion.required' => 'Es obligatorio una descripción',
-            'direccion.required' => 'La dirección es obligatoria',
-            'tipo_empleo.required' => 'El tipo de empleo es obligatorio',
-            'requisito.required' => 'Es obligatorio el requisito',
-            'salario.required' => 'Salario obligatorio'
         ]);
 
         $trabajo->update($validated);
