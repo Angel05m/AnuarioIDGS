@@ -15,41 +15,50 @@ class GaleriaController extends Controller
     {
         $request->validate([
             'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:1000',
-            'imagenes.*' => 'image|mimes:jpeg,png,jpg,'
-        ]);
+            'descripcion' => 'nullable|string|max:1000',
+            'imagenes' => 'required',
+            'imagenes.*' => 'required|image|mimes:jpeg,png,jpg,'
+        ],[
+            'titulo.required' => 'El titulo de la publicación es requerido',
+            'imagenes.required' => 'La publicación requiere al menos una imagen.',
+            'imagenes.*.image' => 'El archivo debe ser una imagen válida.',
 
-        // Guardar apartado principal
-        $galeria = Galeria::create([
-            'fk_usuario' => Auth::id(),
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
         ]);
+        try {
+            // Guardar apartado principal
+            $galeria = Galeria::create([
+                'fk_usuario' => Auth::id(),
+                'titulo' => $request->titulo,
+                'descripcion' => $request->descripcion,
+            ]);
 
-        // Guardar imagenes adicionales
-        if ($request->hasFile('imagenes')) {
-            foreach ($request->file('imagenes') as $imagen) {
-                $ruta = $imagen->store('galeria_imagenes', 'public');
-                MasImagenes::create([
-                    'fk_galeria' => $galeria->pk_galeria,
-                    'ruta_imagen' => $ruta,
-                ]);
+            // Guardar imagenes adicionales
+            if ($request->hasFile('imagenes')) {
+                foreach ($request->file('imagenes') as $imagen) {
+                    $ruta = $imagen->store('galeria_imagenes', 'public');
+                    MasImagenes::create([
+                        'fk_galeria' => $galeria->pk_galeria,
+                        'ruta_imagen' => $ruta,
+                    ]);
+                }
             }
+            return redirect()->route('galeria.bodega')->with('success', 'Publicación exitosa.');
+        } catch (\Throwable $th) {
+            return back()->withErrors('Ocurrió un error al guardar la publicación,');
         }
-
-        return redirect()->back()->with('success', 'Galería creada correctamente.');
     }
 
     // Funcion para mostrar la bodega de galerias
-    public function bodega(){
+    public function bodega()
+    {
         $galerias = Galeria::with('usuario', 'imagenes')->latest()->paginate(20);
         return view('galeria.bodega', compact('galerias'));
     }
 
     // Funcion para mostrar el detalle de una galeria
-    public function detalle($id){
+    public function detalle($id)
+    {
         $galeria = Galeria::with('usuario', 'imagenes')->findOrFail($id);
         return view('galeria.detalle', compact('galeria'));
     }
-
 }
