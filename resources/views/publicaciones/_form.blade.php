@@ -158,7 +158,7 @@
     </a>
 
     {{-- Guardar / Actualizar --}}
-    <button type="submit"
+    <button id="btnGuardar" type="submit"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--utesc-base)] text-white font-semibold hover:opacity-95 shadow">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -170,7 +170,29 @@
 
 {{-- Scripts de la dropzone (igual que ya tenías) --}}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+function initPublicacionesForm(){
+  // =========================
+  //  FIX: evitar doble envío
+  // =========================
+  const form = document.querySelector('form');
+  const btnGuardar = document.getElementById('btnGuardar');
+
+  if (form && btnGuardar && !form.dataset.bound) {
+    form.dataset.bound = "1";
+
+    form.addEventListener('submit', (e) => {
+      if (form.dataset.submitted === "1") {
+        e.preventDefault();
+        return false;
+      }
+      form.dataset.submitted = "1";
+
+      btnGuardar.disabled = true;
+      btnGuardar.classList.add('opacity-60', 'cursor-not-allowed');
+      btnGuardar.innerText = 'Guardando...';
+    }, {capture:true});
+  }
+
   const drop = document.getElementById('dropzone');
   const input = document.getElementById('imagen-input');
   const preview = document.getElementById('preview-container');
@@ -212,5 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
     prompt.classList.remove('hidden');
     preview.classList.add('hidden');
   });
-});
+}
+
+document.addEventListener('DOMContentLoaded', initPublicacionesForm);
+// por si usas Turbo / Livewire navegación
+document.addEventListener('turbo:load', initPublicacionesForm);
+document.addEventListener('livewire:navigated', initPublicacionesForm);
 </script>

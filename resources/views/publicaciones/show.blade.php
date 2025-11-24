@@ -122,7 +122,9 @@
 
     {{-- Acciones --}}
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="{{ route('publications.index') }}"
+
+      {{-- ✅ FIX: volver justo a donde venías --}}
+      <a href="{{ request('back') ?? url()->previous() ?? route('dashboard') }}"
          class="chip hover:brightness-95 transition">← Volver</a>
 
       @if(auth()->id() === $publication->user_id)

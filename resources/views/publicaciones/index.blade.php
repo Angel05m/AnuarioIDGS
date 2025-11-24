@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Mis publicaciones')
 
+{{-- Línea suelta que pegaste; no la borro, solo la comento para que no rompa nada --}}
+{{-- <a href="{{ route('publications.show', $publication) }}"> --}}
+
 @push('styles')
 <style>
   :root{
@@ -273,7 +276,9 @@
 
               <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity
                           flex items-center justify-center gap-4">
-                <a href="{{ route('publications.show', $publication) }}"
+
+                {{-- ✅ FIX: mandamos back con la URL actual --}}
+                <a href="{{ route('publications.show', ['publication'=>$publication, 'back'=>request()->fullUrl()]) }}"
                     class="p-3 bg-white/90 rounded-full hover:bg-white transition transform hover:scale-110">
                   <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -304,8 +309,12 @@
               @endif
 
               <h3 class="text-xl font-bold mb-2 line-clamp-2">
+
+                {{-- ✅ FIX: también en el título --}}
                 <a class="hover:text-[var(--utesc-base)] transition"
-                    href="{{ route('publications.show', $publication) }}">{{ $publication->titulo }}</a>
+                    href="{{ route('publications.show', ['publication'=>$publication, 'back'=>request()->fullUrl()]) }}">
+                    {{ $publication->titulo }}
+                </a>
               </h3>
 
               <div class="flex items-center gap-3 text-xs text-slate-600 mb-3">

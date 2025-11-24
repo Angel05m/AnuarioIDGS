@@ -23,7 +23,7 @@
                         {{ __('Galeria') }}
                     </x-nav-link>
                     {{-- BOTÓN: Mis publicaciones --}}
-                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.*')">
+                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.index')">
                         {{ __('Mis publicaciones') }}
                     </x-nav-link>
                 </div>
@@ -124,7 +124,7 @@
             </x-responsive-nav-link>
 
             {{-- Mis publicaciones (móvil) --}}
-            <x-responsive-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
+            <x-responsive-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.index')">
                 {{ __('Mis publicaciones') }}
             </x-responsive-nav-link>
 

@@ -136,7 +136,23 @@ class PublicationController extends Controller
             'categoria'   => ['nullable', 'string', 'max:100'],
             'estado'      => ['required', 'in:borrador,publicado'],
             'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
+
+            // =========================
+            // FIX: token único anti duplicados
+            // =========================
+            'submission_token' => ['required', 'string'],
         ]);
+
+        // =========================
+        // FIX: si llega el mismo POST 2 o 3 veces, solo guarda 1
+        // =========================
+        $token = $validated['submission_token'];
+        if (session()->has("submission_used_$token")) {
+            return redirect()
+                ->route('publications.index')
+                ->with('success', '¡Publicación creada!');
+        }
+        session(["submission_used_$token" => true]);
 
         if ($request->hasFile('imagen')) {
             // Guarda en storage/app/public/publicaciones (requiere: php artisan storage:link)
