@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BolsaTrabajoController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\ProfileDirectoryController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfiles', [ProfileDirectoryController::class, 'index'])->name('perfiles.index');
+    Route::get('/perfiles/{user}', [ProfileDirectoryController::class, 'show'])->name('perfiles.show');
+});
 
 Route::get('/', function () {
     return view('auth.login');

@@ -22,8 +22,9 @@
                     <x-nav-link class="text-white" :href="route('galeria.bodega')" :active="request()->routeIs('bodega.galeria')">
                         {{ __('Galeria') }}
                     </x-nav-link>
+
                     {{-- BOTÓN: Mis publicaciones --}}
-                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.index')">
+                    <x-nav-link class="text-white" :href="route('publications.index')" :active="request()->routeIs('publications.*')">
                         {{ __('Mis publicaciones') }}
                     </x-nav-link>
                 </div>
@@ -48,36 +49,21 @@
                         </button>
                     </x-slot>
 
-                    <x-slot name="content" class="">
+                    <x-slot name="content">
+                        {{-- Mi perfil --}}
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Perfil') }}
+                            {{ __('Mi perfil') }}
                         </x-dropdown-link>
 
-                        {{-- Contenido --}}
-                        <div x-data="{ contenidoOpen: false }" class="relative">
-                            <button @click="contenidoOpen = !contenidoOpen"
-                                class="w-full text-sm text-gray-600 flex justify-between px-4 py-2 hover:bg-gray-100">
-                                {{ __('Mis publicaciones') }}
-                            </button>
+                        {{-- ✅ Perfiles SOLO en dropdown --}}
+                        <x-dropdown-link :href="route('perfiles.index')">
+                            {{ __('Perfiles') }}
+                        </x-dropdown-link>
 
-                            <div x-show="contenidoOpen" @click.away="contenidoOpen = false" x-transition
-                                class="absolute left-0 mt-1 w-48 bg-white border border-gray-100 rounded-md shadow-lg z-50">
-                                <ul>
-                                    <li>
-                                        <a href="{{ route('usuario.mis_trabajos') }}"
-                                            class="block text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
-                                            Trabajos
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
-                                            Contenido
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        {{-- Mis publicaciones --}}
+                        <x-dropdown-link :href="route('publications.index')">
+                            {{ __('Mis publicaciones') }}
+                        </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -87,7 +73,6 @@
                                 {{ __('Cerrar sesión') }}
                             </x-dropdown-link>
                         </form>
-
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -124,10 +109,9 @@
             </x-responsive-nav-link>
 
             {{-- Mis publicaciones (móvil) --}}
-            <x-responsive-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.index')">
+            <x-responsive-nav-link :href="route('publications.index')" :active="request()->routeIs('publications.*')">
                 {{ __('Mis publicaciones') }}
             </x-responsive-nav-link>
-
         </div>
 
         <!-- Responsive Settings Options -->
@@ -138,41 +122,22 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                {{-- Perfil --}}
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Perfil') }}
                 </x-responsive-nav-link>
 
-                <div x-data="{ contenidoOpen: false }" class="relative">
-                    <button @click="contenidoOpen = !contenidoOpen"
-                        class="w-full font-medium sm:text-sm text-gray-600 flex justify-between px-4 py-2 hover:bg-gray-100">
-                        {{ __('Mis publicaciones') }}
-                    </button>
-
-                    <div x-show="contenidoOpen" @click.away="contenidoOpen = false" x-transition
-                        class="w-full absolute left-0 mt-1 bg-white border border-gray-100 rounded-md shadow-lg z-50">
-                        <ul>
-                            <li>
-                                <a href="{{ route('usuario.mis_trabajos') }}"
-                                    class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
-                                    Trabajos
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block font-medium sm:text-sm text-gray-600 px-4 py-2 hover:bg-gray-100">
-                                    Contenido
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                {{-- ✅ Perfiles SOLO aquí también --}}
+                <x-responsive-nav-link :href="route('perfiles.index')">
+                    {{ __('Perfiles') }}
+                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Cerrar sesión') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
