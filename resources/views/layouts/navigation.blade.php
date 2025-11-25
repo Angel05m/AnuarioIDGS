@@ -57,7 +57,7 @@
 
                         {{-- ✅ Perfiles SOLO en dropdown --}}
                         <x-dropdown-link :href="route('perfiles.index')">
-                            {{ __('Perfiles') }}
+                            {{ __('Usuarios') }}
                         </x-dropdown-link>
 
                         {{-- Mis publicaciones --}}
@@ -129,7 +129,7 @@
 
                 {{-- ✅ Perfiles SOLO aquí también --}}
                 <x-responsive-nav-link :href="route('perfiles.index')">
-                    {{ __('Perfiles') }}
+                    {{ __('Usuarios') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

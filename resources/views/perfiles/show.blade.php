@@ -14,11 +14,28 @@
     box-shadow:0 8px 28px rgba(2,8,23,.10);
   }
   .chip{
-    display:inline-flex; align-items:center;
+    display:inline-flex;
+    align-items:center;
     border:1px solid rgba(18,153,144,.35);
-    color:#0f3a36; background:#fff;
-    border-radius:9999px; padding:.35rem .75rem;
+    color:#0f3a36;
+    background:#fff;
+    border-radius:9999px;
+    padding:.35rem .75rem;
     font-weight:700;
+  }
+  .btn-cancelar{
+    display:inline-flex;
+    align-items:center;
+    border:1px solid #d14a4a;
+    color:#d14a4a;
+    background:#fff;
+    border-radius:9999px;
+    padding:.35rem .75rem;
+    font-weight:700;
+    transition:0.25s;
+  }
+  .btn-cancelar:hover{
+    background:#ffe5e5;
   }
 </style>
 @endpush
@@ -63,14 +80,27 @@
       </div>
 
       <div class="mt-6 text-slate-700">
-        {{-- aquí puedes mostrar más campos si quieres --}}
         <p><strong>Registrado:</strong> {{ $user->created_at->format('d/m/Y') }}</p>
       </div>
 
-      <div class="mt-6">
-        <a href="{{ route('perfiles.index') }}"
-           class="chip hover:brightness-95 transition">← Volver a perfiles</a>
-      </div>
+      {{-- BOTONES --}}
+<div class="mt-6 flex flex-wrap gap-3">
+
+    {{-- ← Volver a perfiles --}}
+    <a href="{{ route('perfiles.index') }}"
+       class="chip hover:brightness-95 transition">
+      ← Ver Usuarios
+    </a>
+
+    {{-- ✔ Cerrar → Va al dashboard (Mis publicaciones) --}}
+    <a href="{{ route('dashboard') }}"
+       class="chip hover:brightness-95 transition">
+      ✖ Cerrar
+    </a>
+
+</div>
+
+
     </div>
 
   </div>

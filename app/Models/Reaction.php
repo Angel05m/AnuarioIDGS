@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Reaction extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'publication_id',
+        'user_id',
+        'ip_address',
+        'type',
+    ];
+
+    public function publication()
+    {
+        return $this->belongsTo(Publication::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

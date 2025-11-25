@@ -13,11 +13,10 @@ class ProfileDirectoryController extends Controller
 
         $users = User::query()
             ->when($q !== '', function ($query) use ($q) {
-                $query->where('name', 'like', "%$q%")
-                      ->orWhere('apaterno', 'like', "%$q%")
-                      ->orWhere('amaterno', 'like', "%$q%")
-                      ->orWhere('matricula', 'like', "%$q%")
-                      ->orWhere('email', 'like', "%$q%");
+                $query->where(function ($sub) use ($q) {
+                    $sub->where('name', 'like', "%$q%")
+                        ->orWhere('email', 'like', "%$q%");
+                });
             })
             ->orderBy('name')
             ->paginate(12)

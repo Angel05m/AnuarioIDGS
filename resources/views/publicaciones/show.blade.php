@@ -77,8 +77,10 @@
 
   {{-- Tarjeta principal blanca --}}
   <article class="detail-card p-6 md:p-8">
+
     {{-- Badges / meta --}}
     <div class="flex flex-wrap items-center gap-3 mb-6">
+
       @if($publication->estado === 'publicado')
         <span class="badge badge-green">
           <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
@@ -99,6 +101,19 @@
         </svg>
         {{ $publication->created_at->format('d/m/Y H:i') }}
       </span>
+
+      {{-- 👤 AUTOR CLICKABLE AL PERFIL --}}
+      @if($publication->user_id)
+        <a href="{{ route('perfiles.show', $publication->user_id) }}"
+           class="chip hover:brightness-95 transition">
+          👤 {{ optional($publication->user)->name ?? 'Usuario' }}
+        </a>
+      @else
+        <span class="chip">
+          👤 {{ optional($publication->user)->name ?? 'Usuario' }}
+        </span>
+      @endif
+
     </div>
 
     {{-- Título --}}
@@ -106,7 +121,7 @@
       {{ $publication->titulo }}
     </h1>
 
-    {{-- Descripción corta (si hay) --}}
+    {{-- Descripción corta --}}
     @if($publication->descripcion)
       <div class="mb-6 rounded-xl border-l-4 p-4"
            style="border-color: var(--utesc-base);
@@ -123,14 +138,18 @@
     {{-- Acciones --}}
     <div class="mt-8 flex flex-wrap gap-3">
 
-      {{-- ✅ FIX: volver justo a donde venías --}}
-      <a href="{{ request('back') ?? url()->previous() ?? route('dashboard') }}"
-         class="chip hover:brightness-95 transition">← Volver</a>
+      {{-- 🔙 BOTÓN VOLVER --}} 
+      <a href="{{ request('back') ?? route('perfiles.index') }}"
+   class="inline-flex items-center px-6 py-3 rounded-full border border-[#129990] text-[#129990] font-semibold bg-white hover:bg-[#e6fffb] transition">
+    ← Volver
+</a>
+
 
       @if(auth()->id() === $publication->user_id)
         <a href="{{ route('publications.edit', $publication) }}"
            class="badge badge-green hover:brightness-95 transition">✏️ Editar</a>
       @endif
     </div>
+
   </article>
 @endsection

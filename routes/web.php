@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 // Inicio => feed con todas las publicaciones (por defecto 'publicado')
 Route::get('/dashboard', [PublicationController::class, 'feed'])
-
-
     ->middleware(['auth','verified'])
     ->name('dashboard');
 
@@ -55,8 +53,16 @@ Route::middleware('auth')->group(function () {
 
     // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);
-    Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
+
+    // ✅ REACCIONAR LIKE
+    Route::post('/publications/{publication}/like', [PublicationController::class, 'toggleLike'])
+        ->middleware('auth')
         ->name('publications.like');
+
+    // ✅ LISTA DE USUARIOS QUE REACCIONARON (hover)
+    Route::get('/publications/{publication}/reactions-users', [PublicationController::class, 'reactionsUsers'])
+        ->middleware('auth')
+        ->name('publications.reactions-users');
 });
 
 // Auth scaffolding (login, register, etc.)
