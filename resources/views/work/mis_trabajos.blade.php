@@ -1,7 +1,9 @@
+@section('title', 'Mis ofertas laborales | Anuario IDGS')
+
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between">
-            <h2 class="font-semibold text-xl text-white leading-tight">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl sm:text-2xl text-teal-600 leading-tight">
                 {{ __('Mis publicaciones de trabajos') }}
 
             </h2>
@@ -12,21 +14,23 @@
         </div>
 
     </x-slot>
-    <div class="p-12 min-h-screen">
+    <div class="p-2 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- NOTIFICACION DE EXITO --}}
             @if (session('success'))
-                <div id="success-message" class="flex justify-end mb-4 bg-green-400 text-green-600 px-4 py-2 rounded">
+                <div id="success-message" class="flex justify-start mb-4 bg-green-200 text-green-600 px-4 py-2 rounded">
                     {{ session('success') }}
                 </div>
             @endif
 
             @if ($misTrabajos->isEmpty())
-                <p>No has publicado ningún trabajo aún.</p>
+                <div>
+                    <p>No has publicado ningún trabajo aún.</p>
+                </div>
             @else
                 <div class="grid gap-4 md:grid-cols-2">
                     @foreach ($misTrabajos as $trabajo)
-                        <div class="border border-gray-300 rounded-2xl p-4 shadow-sm bg-white">
+                        <div class="border border-gray-300 rounded-lg p-4 shadow-sm bg-white">
                             <h2 class="font-semibold text-[#0D2A3F] text-lg">{{ $trabajo->puesto }} -
                                 {{ $trabajo->nombre_empresa }}
                             </h2>
