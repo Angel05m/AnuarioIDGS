@@ -15,6 +15,7 @@ class Publication extends Model
         'descripcion',
         'contenido',
         'categoria',
+<<<<<<< HEAD
         'estado',              // 'borrador' | 'publicado'
         'imagen',
         'likes_count',
@@ -31,11 +32,21 @@ class Publication extends Model
     /* ===========================
      |  Relaciones
      * =========================== */
+=======
+        'estado',
+        'imagen',
+        'likes_count',
+        'views_count',
+        'fecha_publicacion',
+    ];
+
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+<<<<<<< HEAD
     /* ===========================
      |  Accessors / Attributes
      * =========================== */
@@ -81,5 +92,10 @@ class Publication extends Model
     public function scopeOrderByShownAt($query, $dir = 'DESC')
     {
         return $query->orderByRaw('COALESCE(fecha_publicacion, created_at) ' . ($dir === 'ASC' ? 'ASC' : 'DESC'));
+=======
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     }
 }

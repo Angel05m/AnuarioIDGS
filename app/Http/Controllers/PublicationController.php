@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publication;
+<<<<<<< HEAD
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,23 @@ class PublicationController extends Controller
     /**
      * Lista SOLO mis publicaciones (pantalla "Mis publicaciones").
      */
+=======
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class PublicationController extends Controller
+{
+
+
+
+    // INDEX — listado con búsqueda y filtros
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     public function index(Request $request)
     {
         $search   = $request->query('q', '');
         $category = $request->query('categoria', 'all');
+<<<<<<< HEAD
         $estado   = $request->query('estado', 'all');
 
         // Este listado siempre es del usuario logueado
@@ -26,6 +40,26 @@ class PublicationController extends Controller
             ->orderByRaw('COALESCE(fecha_publicacion, created_at) DESC');
 
         if ($search !== '') {
+=======
+        $status   = $request->query('estado', 'all');
+        $mine     = $request->boolean('mine');
+
+        $query = Publication::with('user');
+
+        if ($mine && auth()->check()) {
+            $query->where('user_id', auth()->id());
+        }
+
+        if ($category !== 'all' && !empty($category)) {
+            $query->where('categoria', $category);
+        }
+
+        if ($status !== 'all' && !empty($status)) {
+            $query->where('estado', $status);
+        }
+
+        if (!empty($search)) {
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
             $query->where(function ($q) use ($search) {
                 $q->where('titulo', 'like', "%{$search}%")
                   ->orWhere('descripcion', 'like', "%{$search}%")
@@ -33,6 +67,7 @@ class PublicationController extends Controller
             });
         }
 
+<<<<<<< HEAD
         if ($category !== 'all') {
             $query->where('categoria', $category);
         }
@@ -48,10 +83,18 @@ class PublicationController extends Controller
             ->where('user_id', auth()->id())
             ->whereNotNull('categoria')
             ->where('categoria', '<>', '')
+=======
+        $publications = $query->latest()->paginate(12)->withQueryString();
+
+        $categorias = Publication::select('categoria')
+            ->whereNotNull('categoria')
+            ->where('categoria', '!=', '')
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
             ->distinct()
             ->orderBy('categoria')
             ->pluck('categoria');
 
+<<<<<<< HEAD
         return view('publicaciones.index', [
             'publications'      => $publications,
             'categorias'        => $categorias,
@@ -122,11 +165,21 @@ class PublicationController extends Controller
         ]);
     }
 
+=======
+        return view('publicaciones.index', compact('publications', 'categorias'));
+    }
+
+    // CREATE
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     public function create()
     {
         return view('publicaciones.create');
     }
 
+<<<<<<< HEAD
+=======
+    // STORE — guardar nueva publicación
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -135,6 +188,7 @@ class PublicationController extends Controller
             'contenido'   => ['required', 'string'],
             'categoria'   => ['nullable', 'string', 'max:100'],
             'estado'      => ['required', 'in:borrador,publicado'],
+<<<<<<< HEAD
             'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
         ]);
 
@@ -176,6 +230,46 @@ class PublicationController extends Controller
     public function update(Request $request, Publication $publication)
     {
         $this->authorizeOwner($publication);
+=======
+            'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('imagen')) {
+            $validated['imagen'] = $request->file('imagen')->store('publicaciones', 'public');
+        }
+
+        // 🔹 Asignar usuario autenticado
+        $validated['user_id'] = auth()->id();
+
+        Publication::create($validated);
+
+        return redirect()->route('publications.index')->with('success', '¡Publicación creada exitosamente!');
+    }
+
+    // SHOW
+    public function show(Publication $publication)
+    {
+        return view('publicaciones.show', compact('publication'));
+    }
+
+    // EDIT
+    public function edit(Publication $publication)
+    {
+        // 🔹 Restringe edición solo al autor
+        if ($publication->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para editar esta publicación.');
+        }
+
+        return view('publicaciones.edit', compact('publication'));
+    }
+
+    // UPDATE
+    public function update(Request $request, Publication $publication)
+    {
+        if ($publication->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para actualizar esta publicación.');
+        }
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
 
         $validated = $request->validate([
             'titulo'      => ['required', 'string', 'max:255'],
@@ -183,16 +277,25 @@ class PublicationController extends Controller
             'contenido'   => ['required', 'string'],
             'categoria'   => ['nullable', 'string', 'max:100'],
             'estado'      => ['required', 'in:borrador,publicado'],
+<<<<<<< HEAD
             'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
         ]);
 
         if ($request->hasFile('imagen')) {
             if ($publication->imagen && Storage::disk('public')->exists($publication->imagen)) {
+=======
+            'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ]);
+
+        if ($request->hasFile('imagen')) {
+            if ($publication->imagen) {
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
                 Storage::disk('public')->delete($publication->imagen);
             }
             $validated['imagen'] = $request->file('imagen')->store('publicaciones', 'public');
         }
 
+<<<<<<< HEAD
         // Si pasa de borrador a publicado y no tenía fecha_publicacion, la ponemos
         $estadoNuevo = $validated['estado'] ?? $publication->estado;
         if ($estadoNuevo === 'publicado' && empty($publication->fecha_publicacion)) {
@@ -240,5 +343,59 @@ class PublicationController extends Controller
     private function authorizeOwner(Publication $publication): void
     {
         abort_if($publication->user_id !== auth()->id(), 403, 'No autorizado.');
+=======
+        $publication->update($validated);
+
+        return redirect()->route('publications.show', $publication)->with('success', '¡Publicación actualizada exitosamente!');
+    }
+
+    // DESTROY
+    public function destroy(Publication $publication)
+    {
+        if ($publication->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para eliminar esta publicación.');
+        }
+
+        if ($publication->imagen) {
+            Storage::disk('public')->delete($publication->imagen);
+        }
+
+        $publication->delete();
+
+        return redirect()->route('publications.index')->with('success', 'Publicación eliminada correctamente.');
+    }
+
+    // LIKE
+    public function like(Publication $publication)
+    {
+        $ip = request()->ip();
+        $existing = $publication->reactions()->where('ip_address', $ip)->where('type', 'like')->first();
+
+        if ($existing) {
+            $existing->delete();
+            $publication->decrement('likes_count');
+            $liked = false;
+        } else {
+            $publication->reactions()->create(['ip_address' => $ip, 'type' => 'like']);
+            $publication->increment('likes_count');
+            $liked = true;
+        }
+
+        return response()->json([
+            'success' => true,
+            'liked' => $liked,
+            'likes_count' => $publication->likes_count,
+        ]);
+    }
+
+    // VIEWS
+    public function addView(Publication $publication)
+    {
+        $publication->increment('views_count');
+        return response()->json([
+            'success' => true,
+            'views_count' => $publication->views_count,
+        ]);
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
     }
 }
