@@ -213,7 +213,7 @@ class PublicationController extends Controller
         $publication->update($validated);
 
         return redirect()
-            ->route('publications.show', $publication)
+            ->route('publications.index', $publication)
             ->with('success', '¡Publicación actualizada!');
     }
 

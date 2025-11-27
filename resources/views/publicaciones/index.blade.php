@@ -420,10 +420,6 @@
             </div>
           </article>
         @endforeach
-
-        <div class="col-span-1 md:col-span-2 lg:col-span-3 mt-12">
-          {{ $publications->links() }}
-        </div>
       @endif
     </div>
   </div>
