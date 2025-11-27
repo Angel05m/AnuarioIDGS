@@ -4,31 +4,27 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('publication_id')->constrained()->onDelete('cascade');
-            $table->string('ip_address');
-            $table->enum('type', ['like', 'love', 'wow', 'sad', 'angry']);
+            $table->unsignedBigInteger('publication_id');
+            $table->unsignedBigInteger('user_id'); // ✅ ya con usuario
+            $table->string('type', 50)->default('like');
             $table->timestamps();
-        });
 
-        // Agregar contador de reacciones a publications
-        // Schema::table('publications', function (Blueprint $table) {
-        //     $table->integer('likes_count')->default(0);
-        //     $table->integer('views_count')->default(0);
-        // });
+            // relaciones
+            $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // ✅ evita duplicados (un like por usuario por publicación)
+            $table->unique(['publication_id', 'user_id']);
+        });
     }
 
     public function down(): void
     {
-        Schema::table('publications', function (Blueprint $table) {
-            $table->dropColumn(['likes_count', 'views_count']);
-        });
-        
         Schema::dropIfExists('reactions');
     }
 };
