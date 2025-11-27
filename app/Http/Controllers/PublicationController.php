@@ -36,7 +36,6 @@ class PublicationController extends Controller
         // Este listado siempre es del usuario logueado
         $query = Publication::query()
             ->where('user_id', auth()->id())
-            // Orden por fecha_publicacion si existe, si no, por created_at
             ->orderByRaw('COALESCE(fecha_publicacion, created_at) DESC');
 
         if ($search !== '') {
@@ -95,25 +94,34 @@ class PublicationController extends Controller
             ->pluck('categoria');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        // ✅ IDs de publicaciones que ESTE usuario ya reaccionó (por user_id)
+        $likedPubIds = DB::table('reactions')
+            ->where('user_id', auth()->id())
+            ->pluck('publication_id')
+            ->toArray();
+
+>>>>>>> fe6e960a27f167dd3e85dbfb495b05202a052cca
         return view('publicaciones.index', [
             'publications'      => $publications,
             'categorias'        => $categorias,
             'search'            => $search,
             'category'          => $category,
             'estado'            => $estado,
-            'mine'              => true,                 // aquí SÍ son mis publicaciones
-            'showOwnerActions'  => true,                 // aquí SÍ se muestran editar/eliminar
-            'pageTitle'         => 'Mis publicaciones',  // título para la vista
+            'mine'              => true,
+            'showOwnerActions'  => true,
+            'pageTitle'         => 'Mis publicaciones',
+            'likedPubIds'       => $likedPubIds,   // 👈 IMPORTANTE
         ]);
     }
 
     /**
      * Feed general (Inicio): todas las publicaciones PUBLICADAS.
-     * No muestra acciones de dueño en las tarjetas.
      */
     public function feed(Request $request)
     {
-        // Defaults del feed
+        // por defecto sólo publicadas
         $request->merge([
             'estado' => $request->query('estado', 'publicado'),
         ]);
@@ -123,7 +131,6 @@ class PublicationController extends Controller
         $estado   = $request->query('estado', 'publicado');
 
         $query = Publication::query()
-            // Orden por fecha_publicacion si existe, si no, por created_at
             ->orderByRaw('COALESCE(fecha_publicacion, created_at) DESC');
 
         if ($search !== '') {
@@ -138,14 +145,13 @@ class PublicationController extends Controller
             $query->where('categoria', $category);
         }
 
-        // En el feed, por defecto solo 'publicado'
         if ($estado !== 'all') {
             $query->where('estado', $estado);
         }
 
         $publications = $query->paginate(10)->appends($request->query());
 
-        // Categorías globales (no solo del usuario)
+        // Categorías globales
         $categorias = Publication::query()
             ->whereNotNull('categoria')
             ->where('categoria', '<>', '')
@@ -153,15 +159,22 @@ class PublicationController extends Controller
             ->orderBy('categoria')
             ->pluck('categoria');
 
+        // ✅ IDs de publicaciones que ESTE usuario ya reaccionó
+        $likedPubIds = DB::table('reactions')
+            ->where('user_id', auth()->id())
+            ->pluck('publication_id')
+            ->toArray();
+
         return view('publicaciones.index', [
             'publications'      => $publications,
             'categorias'        => $categorias,
             'search'            => $search,
             'category'          => $category,
             'estado'            => $estado,
-            'mine'              => false,            // es feed, no "mis publicaciones"
-            'showOwnerActions'  => false,            // NO mostrar editar/eliminar aquí
-            'pageTitle'         => 'Publicaciones',  // título de la página
+            'mine'              => false,
+            'showOwnerActions'  => false,
+            'pageTitle'         => 'Publicaciones',
+            'likedPubIds'       => $likedPubIds,   // 👈 IMPORTANTE
         ]);
     }
 
@@ -190,16 +203,23 @@ class PublicationController extends Controller
             'estado'      => ['required', 'in:borrador,publicado'],
 <<<<<<< HEAD
             'imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:4096'],
+            'submission_token' => ['required', 'string'],
         ]);
 
+        $token = $validated['submission_token'];
+        if (session()->has("submission_used_$token")) {
+            return redirect()
+                ->route('publications.index')
+                ->with('success', '¡Publicación creada!');
+        }
+        session(["submission_used_$token" => true]);
+
         if ($request->hasFile('imagen')) {
-            // Guarda en storage/app/public/publicaciones (requiere: php artisan storage:link)
             $validated['imagen'] = $request->file('imagen')->store('publicaciones', 'public');
         }
 
         $validated['user_id'] = auth()->id();
 
-        // Si se guarda como "publicado" y no viene fecha_publicacion, la establecemos
         if (($validated['estado'] ?? null) === 'publicado' && empty($validated['fecha_publicacion'])) {
             $validated['fecha_publicacion'] = Carbon::now();
         }
@@ -213,11 +233,6 @@ class PublicationController extends Controller
 
     public function show(Publication $publication)
     {
-        // Si quieres restringir que solo el dueño vea, descomenta:
-        // abort_if($publication->user_id !== auth()->id(), 403, 'No autorizado.');
-
-        // Ej. para contar vistas: $publication->increment('views_count');
-
         return view('publicaciones.show', compact('publication'));
     }
 
@@ -296,7 +311,10 @@ class PublicationController extends Controller
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Si pasa de borrador a publicado y no tenía fecha_publicacion, la ponemos
+=======
+>>>>>>> fe6e960a27f167dd3e85dbfb495b05202a052cca
         $estadoNuevo = $validated['estado'] ?? $publication->estado;
         if ($estadoNuevo === 'publicado' && empty($publication->fecha_publicacion)) {
             $validated['fecha_publicacion'] = Carbon::now();
@@ -305,7 +323,7 @@ class PublicationController extends Controller
         $publication->update($validated);
 
         return redirect()
-            ->route('publications.show', $publication)
+            ->route('publications.index', $publication)
             ->with('success', '¡Publicación actualizada!');
     }
 
@@ -313,28 +331,84 @@ class PublicationController extends Controller
     {
         $this->authorizeOwner($publication);
 
-        // Eliminar imagen del storage si existe
         if ($publication->imagen && Storage::disk('public')->exists($publication->imagen)) {
             Storage::disk('public')->delete($publication->imagen);
         }
 
-        // Eliminar la publicación
         $publication->delete();
 
-        // Redirigir a la lista "Mis publicaciones"
         return redirect()
             ->route('publications.index')
             ->with('success', 'La publicación fue eliminada correctamente.');
     }
 
-    public function like(Publication $publication, Request $request)
+    /**
+     * ✅ Toggle like (por usuario) + actualiza contador.
+     */
+    public function toggleLike(Publication $publication, Request $request)
     {
-        // Placeholder del like (aquí pondrías tu lógica real por usuario/IP).
+        $userId = auth()->id();
+
+        if (!$userId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No autenticado',
+            ], 401);
+        }
+
+        // ¿Ya había reaccionado este usuario a esta publicación?
+        $reaction = DB::table('reactions')
+            ->where('publication_id', $publication->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($reaction) {
+            // Quitar like
+            DB::table('reactions')->where('id', $reaction->id)->delete();
+            $liked = false;
+        } else {
+            // Dar like
+            DB::table('reactions')->insert([
+                'publication_id' => $publication->id,
+                'user_id'        => $userId,
+                'type'           => 'like',
+                'created_at'     => now(),
+                'updated_at'     => now(),
+            ]);
+            $liked = true;
+        }
+
+        // Recalcular total de likes de esa publicación
+        $likesCount = DB::table('reactions')
+            ->where('publication_id', $publication->id)
+            ->count();
+
+        DB::table('publications')
+            ->where('id', $publication->id)
+            ->update(['likes_count' => $likesCount]);
+
         return response()->json([
-            'success'      => true,
-            'liked'        => false,
-            'likes_count'  => $publication->likes_count ?? 0,
+            'success'     => true,
+            'liked'       => $liked,
+            'likes_count' => $likesCount,
         ]);
+    }
+
+    /**
+     * ✅ Lista de usuarios que han reaccionado (para el dropdown).
+     */
+    public function reactionsUsers(Publication $publication)
+    {
+        $users = DB::table('reactions')
+            ->join('users', 'users.id', '=', 'reactions.user_id')
+            ->where('reactions.publication_id', $publication->id)
+            ->orderBy('reactions.created_at', 'desc')
+            ->limit(50)
+            ->get([
+                'users.name',
+            ]);
+
+        return response()->json($users);
     }
 
     /**

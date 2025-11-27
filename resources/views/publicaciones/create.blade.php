@@ -25,8 +25,6 @@
       padding-top: 1.5rem !important;   /* antes eran 2rem (py-8) */
     }
 
-
-
     /* Botón principal verde */
     .btn-primary{
       background:var(--utesc-base); color:#fff; border-radius:.8rem;
@@ -82,8 +80,6 @@
 
 <div class="pt-0 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-
-
     {{-- Cabecera interna (igual al edit) --}}
     <div class="card-shell mb-6">
       <div class="card-inner p-6">
@@ -111,6 +107,10 @@
       <div class="card-inner p-6">
         <form action="{{ route('publications.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
+
+          {{-- TOKEN ÚNICO PARA EVITAR DUPLICADOS --}}
+          <input type="hidden" name="submission_token" value="{{ \Illuminate\Support\Str::uuid() }}">
+
           @include('publicaciones._form')
         </form>
       </div>

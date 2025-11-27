@@ -47,6 +47,15 @@ class Publication extends Model
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    // ✅ AGREGADO: reacciones/likes
+    public function reactions()
+    {
+        return $this->hasMany(\App\Models\Reaction::class);
+    }
+
+>>>>>>> fe6e960a27f167dd3e85dbfb495b05202a052cca
     /* ===========================
      |  Accessors / Attributes
      * =========================== */
@@ -91,11 +100,17 @@ class Publication extends Model
     // Ordena por fecha de publicación (o created_at si no hay)
     public function scopeOrderByShownAt($query, $dir = 'DESC')
     {
+<<<<<<< HEAD
         return $query->orderByRaw('COALESCE(fecha_publicacion, created_at) ' . ($dir === 'ASC' ? 'ASC' : 'DESC'));
 =======
     public function reactions()
     {
         return $this->hasMany(Reaction::class);
 >>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
+=======
+        return $query->orderByRaw(
+            "COALESCE(fecha_publicacion, created_at) " . ($dir === 'ASC' ? 'ASC' : 'DESC')
+        );
+>>>>>>> fe6e960a27f167dd3e85dbfb495b05202a052cca
     }
 }
