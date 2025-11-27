@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reaction extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
 
     protected $table = 'reactions';
 
@@ -27,4 +28,6 @@ class Reaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+=======
+>>>>>>> a055cc8b974297c6dd14fb65795ec4beac518584
 }
