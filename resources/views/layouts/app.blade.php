@@ -10,6 +10,19 @@
     <title>@yield('title', config('app.name'))</title>
 
     {{-- Vite/Tailwind (solo una vez) --}}
+
+    <head>
+    <!-- ... lo que tengas arriba ... -->
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Estilos inyectados por vistas hijas --}}

@@ -77,8 +77,10 @@
 
   {{-- Tarjeta principal blanca --}}
   <article class="detail-card p-6 md:p-8">
+
     {{-- Badges / meta --}}
     <div class="flex flex-wrap items-center gap-3 mb-6">
+
       @if($publication->estado === 'publicado')
         <span class="badge badge-green">
           <span class="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
@@ -97,8 +99,22 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M8 7V3m8 4V3M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2zM16 11H8m4 0v6"/>
         </svg>
-        {{ $publication->created_at->format('d/m/Y H:i') }}
+        {{ $publication->created_at->format('d/m/Y') }}
+
       </span>
+
+      {{-- 👤 AUTOR CLICKABLE AL PERFIL --}}
+      @if($publication->user_id)
+        <a href="{{ route('perfiles.show', $publication->user_id) }}"
+           class="chip hover:brightness-95 transition">
+          👤 {{ optional($publication->user)->name ?? 'Usuario' }}
+        </a>
+      @else
+        <span class="chip">
+          👤 {{ optional($publication->user)->name ?? 'Usuario' }}
+        </span>
+      @endif
+
     </div>
 
     {{-- Título --}}
@@ -106,7 +122,7 @@
       {{ $publication->titulo }}
     </h1>
 
-    {{-- Descripción corta (si hay) --}}
+    {{-- Descripción corta --}}
     @if($publication->descripcion)
       <div class="mb-6 rounded-xl border-l-4 p-4"
            style="border-color: var(--utesc-base);
@@ -122,13 +138,19 @@
 
     {{-- Acciones --}}
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="{{ route('publications.index') }}"
-         class="chip hover:brightness-95 transition">← Volver</a>
+
+      {{-- 🔙 BOTÓN VOLVER --}} 
+      <a href="{{ request('back') ?? route('perfiles.index') }}"
+   class="inline-flex items-center px-6 py-3 rounded-full border border-[#129990] text-[#129990] font-semibold bg-white hover:bg-[#e6fffb] transition">
+    ← Volver
+</a>
+
 
       @if(auth()->id() === $publication->user_id)
         <a href="{{ route('publications.edit', $publication) }}"
            class="badge badge-green hover:brightness-95 transition">✏️ Editar</a>
       @endif
     </div>
+
   </article>
 @endsection

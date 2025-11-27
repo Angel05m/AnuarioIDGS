@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BolsaTrabajoController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\ProfileDirectoryController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfiles', [ProfileDirectoryController::class, 'index'])->name('perfiles.index');
+    Route::get('/perfiles/{user}', [ProfileDirectoryController::class, 'show'])->name('perfiles.show');
+});
 
 Route::get('/', function () {
     return view('auth.login');
@@ -11,8 +17,6 @@ Route::get('/', function () {
 
 // Inicio => feed con todas las publicaciones (por defecto 'publicado')
 Route::get('/dashboard', [PublicationController::class, 'feed'])
-
-
     ->middleware(['auth','verified'])
     ->name('dashboard');
 
@@ -49,8 +53,16 @@ Route::middleware('auth')->group(function () {
 
     // ----- PUBLICACIONES (Anuario) -----
     Route::resource('publications', PublicationController::class);
-    Route::post('publications/{publication}/like', [PublicationController::class, 'like'])
+
+    // ✅ REACCIONAR LIKE
+    Route::post('/publications/{publication}/like', [PublicationController::class, 'toggleLike'])
+        ->middleware('auth')
         ->name('publications.like');
+
+    // ✅ LISTA DE USUARIOS QUE REACCIONARON (hover)
+    Route::get('/publications/{publication}/reactions-users', [PublicationController::class, 'reactionsUsers'])
+        ->middleware('auth')
+        ->name('publications.reactions-users');
 });
 
 // Auth scaffolding (login, register, etc.)
